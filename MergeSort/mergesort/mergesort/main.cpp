@@ -2,6 +2,10 @@
 
 /** Rewrite merge sort using iterators. */
 /** Rewrite merge sort using O(1) extra space. */
+
+//============================================================================
+// SFD_NAMESPACE BEGIN
+//============================================================================
 namespace SFD_Algorithm
 {
     template <typename ForwardIterator>
@@ -27,14 +31,14 @@ namespace SFD_Algorithm
         // create 2 arrays with size
         typename std::iterator_traits<ForwardIterator>::difference_type sizeLeft, sizeRight, beginLeft, beginRight, currentIndex;
         sizeLeft = std::distance (left, mid);
-        sizeRight = std::distance (mid + 1, right);
+        sizeRight = std::distance (mid, right);
         beginLeft = std::distance (first, left);
-        beginRight = std::distance (first, mid + 1);
+        beginRight = std::distance (first, mid);
         
         typename std::iterator_traits<ForwardIterator>::value_type leftArray[sizeLeft], rightArray[sizeRight];
         
         /** copy subarrays to temp arrays. */
-        copy (first + beginLeft, first + beginRight - 1, leftArray);
+        copy (first + 0, first + beginRight - 1, leftArray);
         copy (first + beginRight, right, rightArray);
         
         for (int i = 0; i < sizeLeft; ++i)
@@ -49,7 +53,7 @@ namespace SFD_Algorithm
             if ( leftArray[i] < rightArray[j])
             {
                 *(first + currentIndex) = leftArray[i];
-                //std::cout << "leftarray: " << leftArray[i] << '\n';
+                std::cout << "leftarray: " << leftArray[i] << '\n';
                 ++i;
             }
             else if ( leftArray[i] > rightArray[j])
@@ -73,6 +77,8 @@ namespace SFD_Algorithm
         
     }
     
+    //template <typename ForwardIterator>
+    
     /** @param first1 is begin() of the
      */
     template <typename ForwardIterator>
@@ -82,14 +88,27 @@ namespace SFD_Algorithm
             return;
         typename std::iterator_traits<ForwardIterator>::difference_type count;
         count = std::distance (first1, last1);
+        std::cout << "count: " << count << '\n';
+//        if (count < 4)
+//        {
+//
+//        }
         ForwardIterator mid = first1;
         std::advance (mid, count/2);
+        std::cout << "firstL: " << *first1
+        << " mid: " << *mid
+        << " firstR: " << *(mid + 1) << '\n';
         mergeSort(first1, mid, first2);
         mergeSort(mid + 1, last1, first2);
-        merge(first2, first1, mid, last1);
+        //merge(first2, first1, mid, last1);
     }
     
 }
+
+//============================================================================
+// SFD_NAMESPACE END
+//============================================================================
+
 template <typename T>
 void merge (T array[], int left, int mid, int right);
 
@@ -211,13 +230,15 @@ void testSimpleRecursion()
 
 void testSFDmergeSort()
 {
-    int array[] {0, 1, 12, 20, 3, 4};
+    int array[] {10, 1, 19, 2, 13, 4};
+    std::cout << "Original Array:\n";
     int size = sizeof (array) / sizeof (array[0]);
-    //SFD_Algorithm::mergeSort(array, array+size, array);
-    mergeSort (array, 0, size - 1);
-    for (int i = 0; i < size; ++i)
-        std::cout << array[i] << ',';
-    std::cout << '\n';
+    printArray(array, size);
+    SFD_Algorithm::mergeSort(array, array+size, array);
+    //mergeSort (array, 0, size - 1);
+//    for (int i = 0; i < size; ++i)
+//        std::cout << array[i] << ',';
+//    std::cout << '\n';
 }
 
 int main(int argc, const char * argv[]) {
