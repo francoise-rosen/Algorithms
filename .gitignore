@@ -1,7 +1,8 @@
-# General
+# Xcode
 .DS_Store
+*.xcuserstate
 
-## User settings
+# User settings
 xcuserdata/
 
 # C++ gitignore

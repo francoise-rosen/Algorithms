@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 /** Rewrite merge sort using iterators. */
 /** Rewrite merge sort using O(1) extra space. */
@@ -6,7 +7,7 @@
 //============================================================================
 // SFD_NAMESPACE BEGIN
 //============================================================================
-namespace SFD_Algorithm
+namespace syfo
 {
     template <typename ForwardIterator>
     void copy (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2)
@@ -21,86 +22,81 @@ namespace SFD_Algorithm
         }
     }
     
-    /** use merge helper function. */
+    /** Here last1 and last 2 are poining to the penultimate elem. */
     template <typename ForwardIterator>
-    void merge (ForwardIterator first, ForwardIterator left, ForwardIterator mid, ForwardIterator right)
+    void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2)
     {
-        //        std::cout << *first << '\n';
-        //        std::cout << *last << '\n';
+        typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right, current;
+        size_left = std::distance (first1, last1) + 1;
+        size_right = std::distance (first2, last2) + 1;
+        typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
+        copy (first1, last1 + 1, left_array);
+        copy (first2, last2 + 1, right_array);
         
-        // create 2 arrays with size
-        typename std::iterator_traits<ForwardIterator>::difference_type sizeLeft, sizeRight, beginLeft, beginRight, currentIndex;
-        sizeLeft = std::distance (left, mid);
-        sizeRight = std::distance (mid, right);
-        beginLeft = std::distance (first, left);
-        beginRight = std::distance (first, mid);
+        std::cout << "size left: " << size_left << " size right: " << size_right << '\n';
         
-        typename std::iterator_traits<ForwardIterator>::value_type leftArray[sizeLeft], rightArray[sizeRight];
-        
-        /** copy subarrays to temp arrays. */
-        copy (first + 0, first + beginRight - 1, leftArray);
-        copy (first + beginRight, right, rightArray);
-        
-        for (int i = 0; i < sizeLeft; ++i)
-            std::cout << leftArray[i] << '\n';
-        
-        currentIndex = std::distance(first, left);
-        int i {0};
-        int j {0};
-        
-        while ( (i < sizeLeft) && (j < sizeRight))
+        /** The problem here is that after the left_size
+         exosted, it just copies the reminder of the right size
+         Look into split pairs and qsort algos!
+         */
+        current = 0;
+        int i {0}, j {0};
+        while ( (i < size_left) && (j < size_right) )
         {
-            if ( leftArray[i] < rightArray[j])
+            if (left_array[i] < right_array[j])
             {
-                *(first + currentIndex) = leftArray[i];
-                std::cout << "leftarray: " << leftArray[i] << '\n';
+                *(first1 + current) = left_array[i];
                 ++i;
             }
-            else if ( leftArray[i] > rightArray[j])
+            else
             {
-                *(first + currentIndex) = rightArray[j];
-                std::cout << "rightarray: " << rightArray[j] << '\n';
+                *(first1 + current) = right_array[j];
                 ++j;
             }
-            ++currentIndex;
+            ++current;
         }
         
-        /** Merge the residue array. */
-        if (i < sizeLeft)
+        for (;i < size_left; ++i)
         {
-            copy (leftArray + i, leftArray + sizeLeft, first + currentIndex);
+            *(first1 + current) = left_array[i];
+            ++current;
         }
-        else if (j < sizeRight)
+        for (;j < size_right; ++j)
         {
-            copy (rightArray + j, rightArray + sizeRight, first + currentIndex);
+            *(first1 + current) = right_array[j];
+            ++current;
         }
         
     }
     
     //template <typename ForwardIterator>
     
-    /** @param first1 is begin() of the
+    /** @param first is begin()
+        @param last is one elem before end()
      */
     template <typename ForwardIterator>
-    void mergeSort (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2)
+    void mergeSort (ForwardIterator first, ForwardIterator last)
     {
-        if (first1 == last1)
+        if (first == last)
             return;
         typename std::iterator_traits<ForwardIterator>::difference_type count;
-        count = std::distance (first1, last1);
+        count = std::distance(first, last);
         std::cout << "count: " << count << '\n';
-//        if (count < 4)
-//        {
-//
-//        }
-        ForwardIterator mid = first1;
-        std::advance (mid, count/2);
-        std::cout << "firstL: " << *first1
-        << " mid: " << *mid
-        << " firstR: " << *(mid + 1) << '\n';
-        mergeSort(first1, mid, first2);
-        mergeSort(mid + 1, last1, first2);
-        //merge(first2, first1, mid, last1);
+        ForwardIterator middle = first;
+        std::advance(middle, count / 2);
+        mergeSort (first, middle);
+        mergeSort (middle + 1, last);
+        merge (first, middle, middle + 1, last);
+   
+    }
+    
+    /** Special case - 1 elem. */
+    template <typename ForwardIterator>
+    void msort (ForwardIterator first, ForwardIterator last)
+    {
+        if (first == last)
+            return;
+        mergeSort(first, last-1);
     }
     
 }
@@ -109,6 +105,9 @@ namespace SFD_Algorithm
 // SFD_NAMESPACE END
 //============================================================================
 
+//============================================================================
+// CASUAL ALGO
+//============================================================================
 template <typename T>
 void merge (T array[], int left, int mid, int right);
 
@@ -188,7 +187,7 @@ void merge (T array[], int left, int mid, int right)
 void testCopy (int arr[], const int& size)
 {
     int arr2[size];
-    SFD_Algorithm::copy (arr, arr + size, arr2);
+    syfo::copy (arr, arr + size, arr2);
     for (int i = 0; i < size; ++i)
     {
         assert (arr[i] == arr2[i]);
@@ -230,30 +229,93 @@ void testSimpleRecursion()
 
 void testSFDmergeSort()
 {
-    int array[] {10, 1, 19, 2, 13, 4};
+    int array[] {10, 1, 19, 2, 13, 4, 29, 17, 5};
     std::cout << "Original Array:\n";
     int size = sizeof (array) / sizeof (array[0]);
     printArray(array, size);
-    SFD_Algorithm::mergeSort(array, array+size, array);
+    //SFD_Algorithm::mergeSort(array, array+size-1);
+    syfo::msort(array, array+size);
+    printArray(array, size);
     //mergeSort (array, 0, size - 1);
 //    for (int i = 0; i < size; ++i)
 //        std::cout << array[i] << ',';
 //    std::cout << '\n';
 }
 
+void testMERGE1 (int arr[], const int& size)
+{
+    int arrSorted[size];
+    syfo::copy (arr, arr+size, arrSorted);
+    std::sort(arrSorted, arrSorted+size);
+    
+    syfo::msort(arr, arr+size);
+    
+    for (int i = 0; i < size; ++i)
+    {
+        if (arr[i] == arrSorted[i])
+            std::cout << arr[i] << " at index " << i << '\n';
+        else
+            std::cout << "FAILED at index " << i << " : " << arr[i]
+            << " != " << arrSorted[i] << '\n';
+    }
+}
+
+template <typename T>
+void testMERGE2 (std::vector<T>& v)
+{
+    std::vector<T> v_copy (v);
+    std::sort (v_copy.begin(), v_copy.end());
+    syfo::msort(v.begin(), v.end());
+    for (int i = 0; i < v.size(); ++i)
+    {
+        if (v[i] == v_copy[i])
+            std::cout << i << " : " << v[i] << '\n';
+        else
+            std::cout << "Failed at index " << i << " : " << v[i]
+            << " != " << v_copy[i] << '\n';
+    }
+}
+
+
+void makeContainer()
+{
+    /** Special case - 1 item. */
+    int one[1] {9};
+    testMERGE1(one, 1);
+    
+    /** Two items. */
+    int a[2] {1, 0};
+    testMERGE1 (a, 2);
+    
+    /** Array with n items */
+    int a2[4] {8, 17, -1, 0};
+    int sz = sizeof (a2) / sizeof (a2[0]);
+    testMERGE1 (a2, sz);
+    
+    /** Vector. */
+    std::vector<double> v {0.0, 0.1, 9.0, 2.3444, 11.2, -4.3};
+    testMERGE2(v);
+    
+    /** Sorted vector. */
+    std::vector<float> vf {10.0f, 11.2f, 33.0f, 89.0f, 112.0f, 235.0f};
+    testMERGE2 (vf);
+    
+    /** Reversed vector. */
+    std::vector<int> vint {19, 17, 11, 7, 4, 2, 0};
+    testMERGE2 (vint);
+    
+    /** std::array. */
+    
+    /** std::map. */
+    
+    /** std::string. */
+}
+
 int main(int argc, const char * argv[]) {
     
     try {
-        int testArray[] { 38, 27, 43, 3, 192};
-        int testArraySize = sizeof (testArray) / sizeof (testArray[0]);
-        //std::cout << testArraySize << '\n';
-        //mergeSortProto<int> (testArray, 0, testArraySize - 1);
-        //mergeSort<int> (testArray, 0, testArraySize - 1);
-        //testCopy(testArray, testArraySize);
-        testSFDmergeSort();
-        //printArray(testArray, testArraySize);
-        
-        //testSimpleRecursion();
+        //testSFDmergeSort();
+        makeContainer();
         
     } catch (std::exception& e) {
         std::cerr << e.what();
