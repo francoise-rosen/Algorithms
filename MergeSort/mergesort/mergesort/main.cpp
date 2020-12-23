@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 /** Rewrite merge sort using iterators. */
 /** Rewrite merge sort using O(1) extra space. */
@@ -6,7 +7,7 @@
 //============================================================================
 // SFD_NAMESPACE BEGIN
 //============================================================================
-namespace SFD_Algorithm
+namespace syfo
 {
     template <typename ForwardIterator>
     void copy (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2)
@@ -28,6 +29,9 @@ namespace SFD_Algorithm
         typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right, current;
         size_left = std::distance (first1, last1) + 1;
         size_right = std::distance (first2, last2) + 1;
+        typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
+        copy (first1, last1 + 1, left_array);
+        copy (first2, last2 + 1, right_array);
         
         std::cout << "size left: " << size_left << " size right: " << size_right << '\n';
         
@@ -36,27 +40,31 @@ namespace SFD_Algorithm
          Look into split pairs and qsort algos!
          */
         current = 0;
-        while ( (size_left > 0) )
+        int i {0}, j {0};
+        while ( (i < size_left) && (j < size_right) )
         {
-            if (*(first1 + current) < *first2)
+            if (left_array[i] < right_array[j])
             {
-                --size_left;
-               // ++first1;
+                *(first1 + current) = left_array[i];
+                ++i;
             }
             else
             {
-                std::swap(*(first1 + current), *first2);
-                --size_left;
-                //++first2;
+                *(first1 + current) = right_array[j];
+                ++j;
             }
             ++current;
         }
         
-        while (size_right > 0)
+        for (;i < size_left; ++i)
         {
-            *(first1 + current) = *first2;
-            ++current; ++first2;
-            --size_right;
+            *(first1 + current) = left_array[i];
+            ++current;
+        }
+        for (;j < size_right; ++j)
+        {
+            *(first1 + current) = right_array[j];
+            ++current;
         }
         
     }
@@ -179,7 +187,7 @@ void merge (T array[], int left, int mid, int right)
 void testCopy (int arr[], const int& size)
 {
     int arr2[size];
-    SFD_Algorithm::copy (arr, arr + size, arr2);
+    syfo::copy (arr, arr + size, arr2);
     for (int i = 0; i < size; ++i)
     {
         assert (arr[i] == arr2[i]);
@@ -226,7 +234,7 @@ void testSFDmergeSort()
     int size = sizeof (array) / sizeof (array[0]);
     printArray(array, size);
     //SFD_Algorithm::mergeSort(array, array+size-1);
-    SFD_Algorithm::msort(array, array+size);
+    syfo::msort(array, array+size);
     printArray(array, size);
     //mergeSort (array, 0, size - 1);
 //    for (int i = 0; i < size; ++i)
@@ -234,32 +242,73 @@ void testSFDmergeSort()
 //    std::cout << '\n';
 }
 
-void testMERGE1(int arr[], const int& size)
+void testMERGE1 (int arr[], const int& size)
 {
     int arrSorted[size];
-    SFD_Algorithm::copy (arr, arr+size, arrSorted);
+    syfo::copy (arr, arr+size, arrSorted);
     std::sort(arrSorted, arrSorted+size);
     
-    SFD_Algorithm::msort(arr, arr+size);
+    syfo::msort(arr, arr+size);
     
     for (int i = 0; i < size; ++i)
     {
         if (arr[i] == arrSorted[i])
             std::cout << arr[i] << " at index " << i << '\n';
         else
-            std::cout << "FAILED at index " << i << " : " << arr[i] << " != " << arrSorted[i] << '\n';
+            std::cout << "FAILED at index " << i << " : " << arr[i]
+            << " != " << arrSorted[i] << '\n';
+    }
+}
+
+template <typename T>
+void testMERGE2 (std::vector<T>& v)
+{
+    std::vector<T> v_copy (v);
+    std::sort (v_copy.begin(), v_copy.end());
+    syfo::msort(v.begin(), v.end());
+    for (int i = 0; i < v.size(); ++i)
+    {
+        if (v[i] == v_copy[i])
+            std::cout << i << " : " << v[i] << '\n';
+        else
+            std::cout << "Failed at index " << i << " : " << v[i]
+            << " != " << v_copy[i] << '\n';
     }
 }
 
 
 void makeContainer()
 {
-    int a[2] {1, 0};
-    //testMERGE1(a, 2);
+    /** Special case - 1 item. */
+    int one[1] {9};
+    testMERGE1(one, 1);
     
-    /** this fails! */
+    /** Two items. */
+    int a[2] {1, 0};
+    testMERGE1 (a, 2);
+    
+    /** Array with n items */
     int a2[4] {8, 17, -1, 0};
-    testMERGE1(a2, 4);
+    int sz = sizeof (a2) / sizeof (a2[0]);
+    testMERGE1 (a2, sz);
+    
+    /** Vector. */
+    std::vector<double> v {0.0, 0.1, 9.0, 2.3444, 11.2, -4.3};
+    testMERGE2(v);
+    
+    /** Sorted vector. */
+    std::vector<float> vf {10.0f, 11.2f, 33.0f, 89.0f, 112.0f, 235.0f};
+    testMERGE2 (vf);
+    
+    /** Reversed vector. */
+    std::vector<int> vint {19, 17, 11, 7, 4, 2, 0};
+    testMERGE2 (vint);
+    
+    /** std::array. */
+    
+    /** std::map. */
+    
+    /** std::string. */
 }
 
 int main(int argc, const char * argv[]) {
