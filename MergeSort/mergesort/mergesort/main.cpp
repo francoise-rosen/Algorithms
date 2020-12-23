@@ -31,10 +31,12 @@ namespace SFD_Algorithm
         
         std::cout << "size left: " << size_left << " size right: " << size_right << '\n';
         
-        /** Using additional space. */
-//        typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
+        /** The problem here is that after the left_size
+         exosted, it just copies the reminder of the right size
+         Look into split pairs and qsort algos!
+         */
         current = 0;
-        while ( (size_left > 0) && (size_right > 0))
+        while ( (size_left > 0) )
         {
             if (*(first1 + current) < *first2)
             {
@@ -44,8 +46,8 @@ namespace SFD_Algorithm
             else
             {
                 std::swap(*(first1 + current), *first2);
-                --size_right; --size_left;
-                ++first2;
+                --size_left;
+                //++first2;
             }
             ++current;
         }
@@ -256,8 +258,8 @@ void makeContainer()
     //testMERGE1(a, 2);
     
     /** this fails! */
-    int a2[3] {8, 17, 0};
-    testMERGE1(a2, 3);
+    int a2[4] {8, 17, -1, 0};
+    testMERGE1(a2, 4);
 }
 
 int main(int argc, const char * argv[]) {
