@@ -25,11 +25,38 @@ namespace SFD_Algorithm
     template <typename ForwardIterator>
     void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2)
     {
-        typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right;
+        typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right, current;
         size_left = std::distance (first1, last1) + 1;
         size_right = std::distance (first2, last2) + 1;
         
         std::cout << "size left: " << size_left << " size right: " << size_right << '\n';
+        
+        /** Using additional space. */
+//        typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
+        current = 0;
+        while ( (size_left > 0) && (size_right > 0))
+        {
+            if (*(first1 + current) < *first2)
+            {
+                --size_left;
+               // ++first1;
+            }
+            else
+            {
+                std::swap(*(first1 + current), *first2);
+                --size_right; --size_left;
+                ++first2;
+            }
+            ++current;
+        }
+        
+        while (size_right > 0)
+        {
+            *(first1 + current) = *first2;
+            ++current; ++first2;
+            --size_right;
+        }
+        
     }
     
     //template <typename ForwardIterator>
@@ -192,21 +219,52 @@ void testSimpleRecursion()
 
 void testSFDmergeSort()
 {
-    int array[] {10, 1, 19, 2, 13, 4};
+    int array[] {10, 1, 19, 2, 13, 4, 29, 17, 5};
     std::cout << "Original Array:\n";
     int size = sizeof (array) / sizeof (array[0]);
     printArray(array, size);
-    SFD_Algorithm::mergeSort(array, array+size-1);
+    //SFD_Algorithm::mergeSort(array, array+size-1);
+    SFD_Algorithm::msort(array, array+size);
+    printArray(array, size);
     //mergeSort (array, 0, size - 1);
 //    for (int i = 0; i < size; ++i)
 //        std::cout << array[i] << ',';
 //    std::cout << '\n';
 }
 
+void testMERGE1(int arr[], const int& size)
+{
+    int arrSorted[size];
+    SFD_Algorithm::copy (arr, arr+size, arrSorted);
+    std::sort(arrSorted, arrSorted+size);
+    
+    SFD_Algorithm::msort(arr, arr+size);
+    
+    for (int i = 0; i < size; ++i)
+    {
+        if (arr[i] == arrSorted[i])
+            std::cout << arr[i] << " at index " << i << '\n';
+        else
+            std::cout << "FAILED at index " << i << " : " << arr[i] << " != " << arrSorted[i] << '\n';
+    }
+}
+
+
+void makeContainer()
+{
+    int a[2] {1, 0};
+    //testMERGE1(a, 2);
+    
+    /** this fails! */
+    int a2[3] {8, 17, 0};
+    testMERGE1(a2, 3);
+}
+
 int main(int argc, const char * argv[]) {
     
     try {
-        testSFDmergeSort();
+        //testSFDmergeSort();
+        makeContainer();
         
     } catch (std::exception& e) {
         std::cerr << e.what();
