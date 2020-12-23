@@ -1,24 +1,53 @@
+/**
+    Implementation of the MergeSort algorithm using iterators.
+ */
+
+
 #include <iostream>
 #include <vector>
+#include <array>
+#include <string>
+#include <map>
 
-/** Rewrite merge sort using iterators. */
-/** Rewrite merge sort using O(1) extra space. */
+/** Rewrite merge sort using iterators. done */
+/** Rewrite merge sort using O(1) extra space. failed */
+
+/** Very basic error handling, will terminate the program
+     on the very first failed test.
+ */
+class SortError
+{
+public:
+    SortError (const std::string& s, int i, int val, int val_exp)
+    :message {s}, index {i}, value {val}, value_expected {val_exp}
+    {}
+    
+    std::string what()
+    {
+        return message + std::to_string(index) + " value obtained " + std::to_string(value) +  " value expected " + std::to_string(value_expected);
+    }
+private:
+    std::string message;
+    int index;
+    int value;
+    int value_expected;
+};
 
 //============================================================================
 // SFD_NAMESPACE BEGIN
 //============================================================================
 namespace syfo
 {
-    template <typename ForwardIterator>
-    void copy (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2)
+    template <typename InputIterator, typename OutputIterator>
+    void copy (InputIterator first, InputIterator last, OutputIterator result)
     {
-        if (first1 == last1)
+        if (first == last)
             return;
         
-        while (first1 != last1)
+        while (first != last)
         {
-            *first2 = *first1;
-            ++first2; ++first1;
+            *result = *first;
+            ++result; ++first;
         }
     }
     
@@ -29,15 +58,15 @@ namespace syfo
         typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right, current;
         size_left = std::distance (first1, last1) + 1;
         size_right = std::distance (first2, last2) + 1;
+        /** Create and fill temp arrays with the left side range
+            and the right side range.
+         */
         typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
-        copy (first1, last1 + 1, left_array);
-        copy (first2, last2 + 1, right_array);
+        syfo::copy (first1, last1 + 1, left_array);
+        syfo::copy (first2, last2 + 1, right_array);
         
-        std::cout << "size left: " << size_left << " size right: " << size_right << '\n';
-        
-        /** The problem here is that after the left_size
-         exosted, it just copies the reminder of the right size
-         Look into split pairs and qsort algos!
+        /** Merge sorted ranges into the final range [first1, last2].
+            Values are compared and added as per condition.
          */
         current = 0;
         int i {0}, j {0};
@@ -56,6 +85,8 @@ namespace syfo
             ++current;
         }
         
+        /** Append the reminder - either the left or the right range.
+         */
         for (;i < size_left; ++i)
         {
             *(first1 + current) = left_array[i];
@@ -66,12 +97,10 @@ namespace syfo
             *(first1 + current) = right_array[j];
             ++current;
         }
-        
     }
     
-    //template <typename ForwardIterator>
-    
-    /** @param first is begin()
+    /** Split and merge recursevly.
+        @param first is begin()
         @param last is one elem before end()
      */
     template <typename ForwardIterator>
@@ -81,22 +110,24 @@ namespace syfo
             return;
         typename std::iterator_traits<ForwardIterator>::difference_type count;
         count = std::distance(first, last);
-        std::cout << "count: " << count << '\n';
         ForwardIterator middle = first;
         std::advance(middle, count / 2);
+        /** The left side. */
         mergeSort (first, middle);
+        /** The right side. */
         mergeSort (middle + 1, last);
         merge (first, middle, middle + 1, last);
-   
     }
     
-    /** Special case - 1 elem. */
+    /** Special case - 0 elem is ignored.
+        The above algorithm does not use iterator to end()
+     */
     template <typename ForwardIterator>
     void msort (ForwardIterator first, ForwardIterator last)
     {
         if (first == last)
             return;
-        mergeSort(first, last-1);
+        mergeSort(first, last - 1);
     }
     
 }
@@ -106,141 +137,8 @@ namespace syfo
 //============================================================================
 
 //============================================================================
-// CASUAL ALGO
+// TESTS
 //============================================================================
-template <typename T>
-void merge (T array[], int left, int mid, int right);
-
-template <typename T>
-void mergeSortProto (T array[], int leftIndex, int rightIndex)
-{
-    int middleIndex = (rightIndex + leftIndex) / 2;
-    merge(array, leftIndex, middleIndex, rightIndex, true);
-}
-
-// 1. Find the middle point
-template <typename T>
-void mergeSort (T array[], int leftIndex, int rightIndex)
-{
-    if ( leftIndex >= rightIndex)
-        return;
-    int middleIndex = (rightIndex + leftIndex) / 2;
-    // split
-    // right side
-    
-    // 3. call mergeSort for the second half
-    mergeSort (array, leftIndex, middleIndex);
-    // 2. call mergeSort for the first half
-    mergeSort (array, middleIndex + 1, rightIndex);
-    //std::cout << middleIndex << '\n';
-    // merge
-    merge (array, leftIndex, middleIndex, rightIndex);
-    
-}
-
-// 4. merge the 2 halves sorted in 2 and 3.
-template <typename T>
-void merge (T array[], int left, int mid, int right)
-{
-    //    std::cout << "left: " << left << '\n';
-    //    std::cout << "mid: " << mid << '\n';
-    //    std::cout << "right: " << right << '\n';
-    
-    /** create temp arrays. */
-    int sizeLeft = mid - left + 1;
-    int sizeRight = right - mid;
-    
-    int currentIndex {left};
-    int currentRIndex {mid + 1};
-    
-    int leftArrayIndex {0};
-    int rightArrayIndex {0};
-    
-    while ( (leftArrayIndex < sizeLeft) && (rightArrayIndex < sizeRight))
-    {
-        if (array[currentIndex] < array[currentRIndex])
-        {
-            //std::cout << "left array item: " << rightArray[rightArrayIndex] << '\n';
-            //array[currentIndex] = leftArray[leftArrayIndex];
-            ++leftArrayIndex;
-        }
-        else
-        {
-            std::swap (array[currentIndex], array[currentRIndex]);
-            ++leftArrayIndex;
-            ++rightArrayIndex;
-        }
-        ++currentIndex;
-    }
-    
-    if (rightArrayIndex < sizeRight)
-    {
-        while (rightArrayIndex < sizeRight)
-        {
-            array [currentIndex] = array [currentRIndex];
-            ++currentRIndex; ++currentIndex; ++rightArrayIndex;
-        }
-    }
-    
-}
-
-void testCopy (int arr[], const int& size)
-{
-    int arr2[size];
-    syfo::copy (arr, arr + size, arr2);
-    for (int i = 0; i < size; ++i)
-    {
-        assert (arr[i] == arr2[i]);
-    }
-    std::cout << "passed!\n";
-}
-
-template <typename T>
-void printArray (T array[], const int& size)
-{
-    std::cout << "{ ";
-    for (int i = 0; i < size; ++i)
-    {
-        std::cout << array[i];
-        if (i == size - 1)
-            std::cout << " }\n";
-        else if ((i%10 == 0) && (i != 0))
-            std::cout << '\n';
-        else
-            std::cout << " ,";
-        
-    }
-}
-
-void simpleRecursion (int array[], int left, int right)
-{
-    if (left >= right)
-        return;
-    int mid = (left + right) / 2;
-    simpleRecursion (array, mid + 1, right);
-    std::cout << "mid: " << array[mid] << "\nright: " << array[right] << '\n';
-}
-
-void testSimpleRecursion()
-{
-    int array[] {0, 1, 12, 2, 3, 4};
-    simpleRecursion (array, 0, 4);
-}
-
-void testSFDmergeSort()
-{
-    int array[] {10, 1, 19, 2, 13, 4, 29, 17, 5};
-    std::cout << "Original Array:\n";
-    int size = sizeof (array) / sizeof (array[0]);
-    printArray(array, size);
-    //SFD_Algorithm::mergeSort(array, array+size-1);
-    syfo::msort(array, array+size);
-    printArray(array, size);
-    //mergeSort (array, 0, size - 1);
-//    for (int i = 0; i < size; ++i)
-//        std::cout << array[i] << ',';
-//    std::cout << '\n';
-}
 
 void testMERGE1 (int arr[], const int& size)
 {
@@ -260,6 +158,9 @@ void testMERGE1 (int arr[], const int& size)
     }
 }
 
+/** This test will not terminate the program,
+    it will simply print out failed elements and their indecies.
+ */
 template <typename T>
 void testMERGE2 (std::vector<T>& v)
 {
@@ -274,6 +175,39 @@ void testMERGE2 (std::vector<T>& v)
             std::cout << "Failed at index " << i << " : " << v[i]
             << " != " << v_copy[i] << '\n';
     }
+}
+
+template <typename Container>
+void testMERGE3 (Container& container)
+{
+    Container c_copy (container);
+    std::sort (c_copy.begin(), c_copy.end());
+    syfo::msort (container.begin(), container.end());
+    for (int i = 0; i < container.size(); ++i)
+    {
+        if (container[i] != c_copy[i])
+            throw SortError ("Wrong result at index ", i, container[i], c_copy[i]);
+        std::cout << container[i] << '\n';
+    }
+}
+
+template <typename ForwardIterator>
+void testMERGE3 (ForwardIterator first, ForwardIterator last)
+{
+    typename std::iterator_traits<ForwardIterator>::difference_type size {std::distance(first, last)};
+    typename std::iterator_traits<ForwardIterator>::value_type c_copy[size];
+    syfo::copy (first, last, c_copy + 0);
+    std::sort (c_copy + 0, c_copy + size);
+    syfo::msort (first, last);
+    int count = 0;
+    while (count < size)
+    {
+        if (*(first + count) != c_copy[count])
+            throw SortError ("Wrong result at index ", count, *(first + count), c_copy[count]);
+        std::cout << *(first + count) << '\n';
+        ++count;
+    }
+    std::cout << "Passed!\n";
 }
 
 
@@ -291,6 +225,8 @@ void makeContainer()
     int a2[4] {8, 17, -1, 0};
     int sz = sizeof (a2) / sizeof (a2[0]);
     testMERGE1 (a2, sz);
+    int popArray[9] {9, 1, 0, -2, -10000, 10000, 6, 2, 256};
+    testMERGE3(popArray, popArray + 9);
     
     /** Vector. */
     std::vector<double> v {0.0, 0.1, 9.0, 2.3444, 11.2, -4.3};
@@ -304,7 +240,19 @@ void makeContainer()
     std::vector<int> vint {19, 17, 11, 7, 4, 2, 0};
     testMERGE2 (vint);
     
+    /** Populated with repeated values. */
+    std::vector<int> vint2 {2, 2, 2, 2, 0, 0, 0};
+    testMERGE2 (vint2);
+    
     /** std::array. */
+    std::array<int, 10> arr {8, 16, 2, 4, 256, 128, 999, -999, 7, 14};
+    testMERGE3 (arr);
+    
+    /** dynamic array. */
+    int* dyn_array = new int[vint.size()];
+    syfo::copy (vint.begin(), vint.end(), dyn_array + 0);
+    testMERGE3(dyn_array, dyn_array+(vint.size()));
+    delete[] dyn_array;
     
     /** std::map. */
     
@@ -317,8 +265,10 @@ int main(int argc, const char * argv[]) {
         //testSFDmergeSort();
         makeContainer();
         
-    } catch (std::exception& e) {
-        std::cerr << e.what();
+    }
+    catch (SortError& se)
+    {
+        std::cerr << se.what() << '\n';
         return 1;
     }
     
