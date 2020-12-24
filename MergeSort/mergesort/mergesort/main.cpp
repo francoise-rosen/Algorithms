@@ -8,9 +8,22 @@
 #include <array>
 #include <string>
 #include <map>
+#include <list>
 
 /** Rewrite merge sort using iterators. done */
 /** Rewrite merge sort using O(1) extra space. failed */
+
+/**
+ Works for:
+ - array, std::array, std::vector, std::string
+ Does not work:
+ - list, map
+ */
+
+/** - Fix algorithm for list,
+    - Rewrite algorithm for map.
+    - Follow ch 25 of Standart
+ */
 
 /** Very basic error handling, will terminate the program
      on the very first failed test.
@@ -51,6 +64,19 @@ namespace syfo
         }
     }
     
+    /** Copy a map. */
+//    template <typename InputIterator, typename OutputIterator>
+//    OutputIterator copyMap (InputIterator first, InputIterator last, OutputIterator result)
+//    {
+//        while (first != last)
+//        {
+//            *result = std::pair;
+//            result->second = first->second;
+//            ++result; ++first;
+//        }
+//        return result;
+//    }
+    
     /** Here last1 and last 2 are poining to the penultimate elem. */
     template <typename ForwardIterator>
     void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2)
@@ -69,12 +95,14 @@ namespace syfo
             Values are compared and added as per condition.
          */
         current = 0;
+        //ForwardIterator current = first1;
         int i {0}, j {0};
         while ( (i < size_left) && (j < size_right) )
         {
             if (left_array[i] < right_array[j])
             {
                 *(first1 + current) = left_array[i];
+                // *first1 = left_array[i];
                 ++i;
             }
             else
@@ -190,7 +218,7 @@ void testMERGE3 (Container& container)
         std::cout << container[i] << '\n';
     }
 }
-
+/** Accepts containers with begin(), end() inerators. */
 template <typename ForwardIterator>
 void testMERGE3 (ForwardIterator first, ForwardIterator last)
 {
@@ -203,9 +231,25 @@ void testMERGE3 (ForwardIterator first, ForwardIterator last)
     while (count < size)
     {
         if (*(first + count) != c_copy[count])
-            throw SortError ("Wrong result at index ", count, *(first + count), c_copy[count]);
+            throw SortError ("Failed! Wrong result at index ", count, *(first + count), c_copy[count]);
         std::cout << *(first + count) << '\n';
         ++count;
+    }
+    std::cout << "Passed!\n";
+}
+
+// copy map does not work!
+template <typename K, typename V>
+void testMERGE4 (std::map<K, V>& m)
+{
+    std::map<K, V> map_copy {m};
+    std::sort (map_copy.begin(), map_copy.end());
+    syfo::msort (map_copy.begin(), map_copy.end());
+    typename std::map<K, V>::iterator sorted_it = map_copy.begin();
+    for (typename std::map<K, V>::iterator it = m.begin(); it != m.end(); ++it)
+    {
+        if (it->first != sorted_it->first)
+            std::cout << "Failed! " << it->first << " != " << sorted_it->first << '\n';
     }
     std::cout << "Passed!\n";
 }
@@ -226,7 +270,7 @@ void makeContainer()
     int sz = sizeof (a2) / sizeof (a2[0]);
     testMERGE1 (a2, sz);
     int popArray[9] {9, 1, 0, -2, -10000, 10000, 6, 2, 256};
-    testMERGE3(popArray, popArray + 9);
+    testMERGE3 (popArray, popArray + 9);
     
     /** Vector. */
     std::vector<double> v {0.0, 0.1, 9.0, 2.3444, 11.2, -4.3};
@@ -254,17 +298,35 @@ void makeContainer()
     testMERGE3(dyn_array, dyn_array+(vint.size()));
     delete[] dyn_array;
     
-    /** std::map. */
-    
     /** std::string. */
+    std::string str {"Confiled"};
+    testMERGE3(str.begin(), str.end());
+    
 }
+
+/** not working. */
+void testLIST()
+{
+    /** list. */
+    std::list<int> lst {99,23,1,0,-1,9999};
+    //testMERGE3(lst.begin(), lst.end());
+}
+// not working!
+//void testMAP()
+//{
+//    /** std::map. */
+//    std::map<int, std::string> aeLP {
+//        {4, "Chiastic Slide"}, {1, "Incunabula"}, {5, "LP5"}, {7, "Draft 7.30"},
+//        {2, "Amber"}, {8, "Untilted"}, {11, "Exai"}, {14, "SIGN"}, {15, "PLUS"},
+//        {13, "NTS Sessions"}, {12, "Elseq"}, {9, "Quaristice"}
+//    };
+//    testMERGE4 (aeLP);
+//}
 
 int main(int argc, const char * argv[]) {
     
     try {
-        //testSFDmergeSort();
         makeContainer();
-        
     }
     catch (SortError& se)
     {
