@@ -9,19 +9,26 @@
 #include <string>
 #include <map>
 #include <list>
+#include <forward_list>
 
 /** Rewrite merge sort using iterators. done */
 /** Rewrite merge sort using O(1) extra space. failed */
 
 /**
  Works for:
- - array, std::array, std::vector, std::string
+ - array (Random access)
+ - std::array, (Random)
+ - std::vector, (Random)
+ - std::string (Random)
+ - list, (Bidirectional)
+ - forward list (Forward)
  Does not work:
- - list, map
+ -  map (bidirectional)
  */
 
 /** - Fix algorithm for list,
     - Rewrite algorithm for map.
+    - Look into ch 23 of Standart
     - Follow ch 25 of Standart
  */
 
@@ -82,14 +89,17 @@ namespace syfo
     void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2)
     {
         typename std::iterator_traits<ForwardIterator>::difference_type size_left, size_right, current;
-        size_left = std::distance (first1, last1) + 1;
-        size_right = std::distance (first2, last2) + 1;
+        /** move one beyond the last element to use end() in copy
+            and in calculating the distance.
+         */
+        size_left = std::distance (first1, ++last1);
+        size_right = std::distance (first2, ++last2);
         /** Create and fill temp arrays with the left side range
             and the right side range.
          */
         typename std::iterator_traits<ForwardIterator>::value_type left_array[size_left], right_array[size_right];
-        syfo::copy (first1, last1 + 1, left_array);
-        syfo::copy (first2, last2 + 1, right_array);
+        syfo::copy (first1, last1, left_array);
+        syfo::copy (first2, last2, right_array);
         
         /** Merge sorted ranges into the final range [first1, last2].
             Values are compared and added as per condition.
@@ -101,29 +111,32 @@ namespace syfo
         {
             if (left_array[i] < right_array[j])
             {
-                *(first1 + current) = left_array[i];
+                *first1 = left_array[i];
                 // *first1 = left_array[i];
                 ++i;
             }
             else
             {
-                *(first1 + current) = right_array[j];
+                *first1 = right_array[j];
                 ++j;
             }
             ++current;
+            ++first1;
         }
         
         /** Append the reminder - either the left or the right range.
          */
         for (;i < size_left; ++i)
         {
-            *(first1 + current) = left_array[i];
+            *first1 = left_array[i];
             ++current;
+            ++first1;
         }
         for (;j < size_right; ++j)
         {
-            *(first1 + current) = right_array[j];
+            *first1 = right_array[j];
             ++current;
+            ++first1;
         }
     }
     
@@ -143,8 +156,10 @@ namespace syfo
         /** The left side. */
         mergeSort (first, middle);
         /** The right side. */
-        mergeSort (middle + 1, last);
-        merge (first, middle, middle + 1, last);
+        ForwardIterator middleNext = middle;
+        std::advance (middleNext, 1);
+        mergeSort (middleNext, last);
+        merge (first, middle, middleNext, last);
     }
     
     /** Special case - 0 elem is ignored.
@@ -155,7 +170,11 @@ namespace syfo
     {
         if (first == last)
             return;
-        mergeSort(first, last - 1);
+        typename std::iterator_traits<ForwardIterator>::difference_type sz;
+        sz = std::distance(first, last);
+        ForwardIterator pen = first;
+        std::advance (pen, sz - 1);
+        mergeSort(first, pen);
     }
     
 }
@@ -228,11 +247,12 @@ void testMERGE3 (ForwardIterator first, ForwardIterator last)
     std::sort (c_copy + 0, c_copy + size);
     syfo::msort (first, last);
     int count = 0;
-    while (count < size)
+    while (first != last)
     {
-        if (*(first + count) != c_copy[count])
-            throw SortError ("Failed! Wrong result at index ", count, *(first + count), c_copy[count]);
-        std::cout << *(first + count) << '\n';
+        if (*first != c_copy[count])
+            throw SortError ("Failed! Wrong result at index ", count, *first, c_copy[count]);
+        std::cout << *first << '\n';
+        ++first;
         ++count;
     }
     std::cout << "Passed!\n";
@@ -243,14 +263,18 @@ template <typename K, typename V>
 void testMERGE4 (std::map<K, V>& m)
 {
     std::map<K, V> map_copy {m};
-    std::sort (map_copy.begin(), map_copy.end());
-    syfo::msort (map_copy.begin(), map_copy.end());
-    typename std::map<K, V>::iterator sorted_it = map_copy.begin();
-    for (typename std::map<K, V>::iterator it = m.begin(); it != m.end(); ++it)
-    {
-        if (it->first != sorted_it->first)
-            std::cout << "Failed! " << it->first << " != " << sorted_it->first << '\n';
-    }
+    // - how to copy?
+    // - use cmp for sorting
+    //std::map<K, V> mc2;
+    //std::copy (map_copy.begin(), map_copy.end(), mc2.begin());
+    //std::sort (map_copy.begin(), map_copy.end());
+    //syfo::msort (map_copy.begin(), map_copy.end());
+//    typename std::map<K, V>::iterator sorted_it = map_copy.begin();
+//    for (typename std::map<K, V>::iterator it = m.begin(); it != m.end(); ++it)
+//    {
+//        if (it->first != sorted_it->first)
+//            std::cout << "Failed! " << it->first << " != " << sorted_it->first << '\n';
+//    }
     std::cout << "Passed!\n";
 }
 
@@ -309,24 +333,35 @@ void testLIST()
 {
     /** list. */
     std::list<int> lst {99,23,1,0,-1,9999};
-    //testMERGE3(lst.begin(), lst.end());
+    testMERGE3(lst.begin(), lst.end());
+    for (auto elem : lst)
+        std::cout << elem << " ";
+    std::cout << '\n';
+    
+    /** forward list. */
+    std::forward_list<double> flst {12.2, 0.1, -54.3333, 0.2, 0.001, -0.000001};
+    testMERGE3(flst.begin(), flst.end());
+    for (auto elem: flst)
+        std::cout << elem << " ";
+    std::cout << '\n';
 }
 // not working!
-//void testMAP()
-//{
-//    /** std::map. */
-//    std::map<int, std::string> aeLP {
-//        {4, "Chiastic Slide"}, {1, "Incunabula"}, {5, "LP5"}, {7, "Draft 7.30"},
-//        {2, "Amber"}, {8, "Untilted"}, {11, "Exai"}, {14, "SIGN"}, {15, "PLUS"},
-//        {13, "NTS Sessions"}, {12, "Elseq"}, {9, "Quaristice"}
-//    };
-//    testMERGE4 (aeLP);
-//}
+void testMAP()
+{
+    /** std::map. */
+    std::map<int, std::string> aeLP {
+        {4, "Chiastic Slide"}, {1, "Incunabula"}, {5, "LP5"}, {7, "Draft 7.30"},
+        {2, "Amber"}, {8, "Untilted"}, {11, "Exai"}, {14, "SIGN"}, {15, "PLUS"},
+        {13, "NTS Sessions"}, {12, "Elseq"}, {9, "Quaristice"}
+    };
+    testMERGE4 (aeLP);
+}
 
 int main(int argc, const char * argv[]) {
     
     try {
         makeContainer();
+        testLIST();
     }
     catch (SortError& se)
     {
