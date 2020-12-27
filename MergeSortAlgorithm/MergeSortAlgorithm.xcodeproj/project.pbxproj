@@ -26,6 +26,7 @@
 		9E6D95AF25976A7D001E41D6 /* MergeSortAlgorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MergeSortAlgorithm; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6D95B225976A7D001E41D6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9E6D95B925976A98001E41D6 /* mergeSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mergeSort.h; sourceTree = "<group>"; };
+		9EA782E82598A249002F1003 /* log.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = log.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 			children = (
 				9E6D95B225976A7D001E41D6 /* main.cpp */,
 				9E6D95B925976A98001E41D6 /* mergeSort.h */,
+				9EA782E82598A249002F1003 /* log.txt */,
 			);
 			path = MergeSortAlgorithm;
 			sourceTree = "<group>";
