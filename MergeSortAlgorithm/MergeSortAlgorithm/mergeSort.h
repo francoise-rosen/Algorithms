@@ -26,7 +26,12 @@ namespace syfo
         return result;
     }
     
-    /** Here last1 and last 2 are poining to the last elem. */
+    /** Merging the left and the right subranges, sorting their elements*/
+    /** @param first1 is the begin() of the left subrange.
+        @param last1 is the last element of the left subrange.
+        @param first2 is the begin() of the right subrange.
+        @param last2 is the last element of the right subrange.
+     */
     template <typename ForwardIterator>
     void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2)
     {

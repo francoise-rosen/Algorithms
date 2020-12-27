@@ -201,14 +201,6 @@ void testList (std::ofstream& ofs_log)
     testMergeSort (flst.begin(), flst.end(), ofs_log, "forward list");
 }
 
-void testRandom()
-{
-    for (int i = 0; i < 10; ++i)
-    {
-        std::cout << getIntValueInRange (std::numeric_limits<int>::min(), std::numeric_limits<int>::max()) << '\n';
-    }
-}
-
 /** This is tricky, since it uses new and delete. Only for testing purposes. */
 void testDynamicArray (const int& min, const int& max, const unsigned& arraySize, std::ofstream& log, const std::string& test_label, bool terminateOnFirstFail)
 {
@@ -261,23 +253,6 @@ void runAllTests()
     runTestsWithRandomFill (100, -10000, 10000, 10, ofs_log);
     ofs_log.close();
     readLog (file);
-}
-
-void testLog()
-{
-    std::string file_name = "log.txt";
-    std::ofstream ofs_log {file_name};
-    if (! ofs_log)
-        throw std::runtime_error ("bad file \"log.txt\"");
-    for (int i = 0; i < 10; ++i)
-    {
-        int temp = getIntValueInRange (0, 256);
-        ofs_log << "Random number: " << temp << '\n';
-        std::cout << temp << '\n';
-        
-    }
-    ofs_log.close();
-    readLog (file_name);
 }
 
 int main(int argc, const char * argv[]) {
