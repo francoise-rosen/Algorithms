@@ -107,8 +107,11 @@ namespace syfo
         merge (first, middle, middleNext, last);
     }
     
-    /** Special case - 0 elem is ignored.
-     The above algorithm does not use iterator to one-past-last (end())
+    /** Accessed by user.
+        @param first - begin()
+        @param last - end()
+        The recursive algorithm from above needs the last to be
+        the last element in subrange, the element that can be dereferenced (not the end()).
      */
     template <typename ForwardIterator>
     void msort (ForwardIterator first, ForwardIterator last)

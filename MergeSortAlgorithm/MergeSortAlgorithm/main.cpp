@@ -103,7 +103,7 @@ void testMergeSort (ForwardIterator first, ForwardIterator last, std::ofstream& 
 }
 
 /** Accepts containers with begin(), end() inerators.
-    This is the fuction for dynamic arrays, so it must not throw exceptions!
+    This is the function for dynamic arrays, so it must not throw exceptions!
     If requested, it'll register the first error and will exit the function.
  */
 template <typename ForwardIterator>
@@ -186,7 +186,6 @@ void testString (std::ofstream& ofs_log)
     /** std::string. */
     std::string str {"Confiled"};
     testMergeSort (str.begin(), str.end(), ofs_log, "string");
-    /** read test to strings and pass them to test. */
 }
 
 /** Basic test for Bidirectional and Forward Iterators. */
