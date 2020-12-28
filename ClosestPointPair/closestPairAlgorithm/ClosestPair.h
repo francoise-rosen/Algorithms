@@ -15,6 +15,10 @@
 namespace  syfo {
     
     // This must be called if there are at least 2 points in container
+    /** @param first - begin()
+        @param last - end()
+        @return pair of iterators (closest pair of points)
+     */
     template <typename ForwardIterator, typename T>
     std::pair<ForwardIterator, ForwardIterator> bruteForce (ForwardIterator first, ForwardIterator last)
     {
@@ -42,7 +46,11 @@ namespace  syfo {
         return result;
     }
     
-    /** @return pair of iterators to the closest pair of pointers within the strip
+    /** @param first - begin()
+        @param last - end()
+        @param middle - iterator to a middle point (last element in the left subrange)
+        @param d - closest pair of points from either subrage (left or right)
+        @return pair of iterators to the closest pair of pointers within the strip
         Note that this changes the pair d!
         In case there are several equally spaced points, it will return the pair of
         iterators to either of those.
@@ -66,7 +74,6 @@ namespace  syfo {
         }
         
         /** Sort the strip items in respect to their y coordinate. */
-//        sort (strip.begin(), strip.end(), [] (ForwardIterator a, ForwardIterator b) { return (*a).y < (*b).y;});
         msort (strip.begin(), strip.end(), [] (ForwardIterator a, ForwardIterator b)
                { return (*a).y < (*b).y;});
         for (int i = 0; i < strip.size(); ++i)
@@ -86,6 +93,11 @@ namespace  syfo {
         return closestPairFromSplit;
     }
     
+    /** Split the range in two and recursively search for a closest pair
+        @param first - begin() of subrange
+        @param last - end() of subrange
+        @return pair of iteratirs to the currently closest pair
+     */
     template <typename ForwardIterator, typename T>
     std::pair<ForwardIterator, ForwardIterator> closestPair (ForwardIterator first, ForwardIterator last)
     {
@@ -112,6 +124,12 @@ namespace  syfo {
         return closestPairFromPartition;
     }
     
+    /** This function merely sorts the incoming conteiner by x coordinate,
+        calls the recursive algorithm, and ultimately returns the closest pair.
+        @param first - begin()
+        @param last - end()
+        @return pair of iterators to the closest pair of points
+     */
     template <typename ForwardIterator, typename T>
     std::pair<ForwardIterator, ForwardIterator> findClosestDistance (ForwardIterator first, ForwardIterator last)
     {

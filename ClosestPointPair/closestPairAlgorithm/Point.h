@@ -25,7 +25,6 @@ namespace syfo {
             os << "[" << point.x << ", " << point.y << "]";
             return os;
         };
-        
     };
     
     /** Calculate distance between two points. */
