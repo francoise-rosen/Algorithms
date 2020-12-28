@@ -12,6 +12,7 @@
 #include <cassert>
 #include <math.h>
 #include <random>
+#include <array>
 #include "ClosestPair.h"
 #include "MergeSort.h"
 
@@ -86,7 +87,7 @@ bool closestPairCompare (ForwardIterator first, ForwardIterator last, std::ofstr
 // INPUTS
 /** Test 1 - the closest pair is always split if sorted by x,
     so split function must find the closest distance. */
-void test1(std::ofstream& ofs_log, bool terminateOnFailure = true)
+void test1(std::ofstream& ofs_log, bool terminateOnFailure = false)
 {
     std::vector<syfo::Point<double>> points
     {
@@ -103,11 +104,13 @@ void test1(std::ofstream& ofs_log, bool terminateOnFailure = true)
         {21.01, 21.009}
     };
     using iterator_type = std::vector<syfo::Point<double>>::iterator;
-    closestPairCompare<iterator_type, double> (points.begin(), points.end(), ofs_log, "simple_copy");
+    bool status = closestPairCompare<iterator_type, double> (points.begin(), points.end(), ofs_log, "simple_copy");
+    if (! status)
+        throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
 /** Test 2. All x coordinates are the same. */
-void test2 (std::ofstream& ofs_log, bool terminateOnFailure = true)
+void test2 (std::ofstream& ofs_log, bool terminateOnFailure = false)
 {
     std::vector<syfo::Point<int>> p {
         {1, 2},
@@ -116,7 +119,9 @@ void test2 (std::ofstream& ofs_log, bool terminateOnFailure = true)
         {1, 35}
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
-    closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same x coordinates");
+    bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same x coordinates");
+    if (! status)
+        throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
 /** Test 3. All y coordinates are the same. */
@@ -130,7 +135,9 @@ void test3 (std::ofstream& ofs_log, bool terminateOnFailure = true)
         {5, 2}
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
-    closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same y coordinates");
+    bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same y coordinates");
+    if (! status)
+        throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
 /** Test 4. All points the same. */
@@ -144,7 +151,9 @@ void test4 (std::ofstream& ofs_log, bool terminateOnFailure = true)
         {10, 10}
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
-    closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "all points are the same");
+    bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "all points are the same");
+    if (! status)
+        throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
 /** Test 5. Equally spaced points. */
@@ -158,12 +167,15 @@ void test5 (std::ofstream& ofs_log, bool terminateOnFailure = true)
         {5.0f, 5.0f}
     };
     using iter = std::vector<syfo::Point<float>>::iterator;
-    closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, "all points are equally spaced");
+    bool status = closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, "all points are equally spaced");
+    if (! status)
+        throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
 /** Test 6. Positive and negative values of x and y. */
-void test6 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminateOnFailure = true)
+void test6 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminateOnFailure = false)
 {
+    using iter = std::vector<syfo::Point<float>>::iterator;
     for (int i = 0; i < numRolls; ++i)
     {
         std::vector<syfo::Point<float>> p;
@@ -173,13 +185,32 @@ void test6 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminat
             float fy = randomValueInRange<float> (-100.0f, 100.0f);
             p.push_back({fx, fy});
         }
-        using iter = std::vector<syfo::Point<float>>::iterator;
-        std::string message = "Random points #" + std::to_string(i);
-        closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, message);
+        std::string message = "Test 6. Random points #" + std::to_string(i);
+        bool status = closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, message);
+        if (! status)
+            throw std::runtime_error ("Test failed. Terminating. See log for details" );
     }
 }
 
-// very small space between points
+/** Test 7. Very narrow spacing. */
+void test7 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminateOnFailure = false)
+{
+    using iter = std::vector<syfo::Point<long double>>::iterator;
+    for (int i = 0; i < numRolls; ++i)
+    {
+        std::vector<syfo::Point<long double>> p;
+        for (int j = 0; j < size; ++j)
+        {
+            long double dx = randomValueInRange <long double> (0.00001, 0.00002);
+            long double dy = randomValueInRange <long double> (0.00001, 0.00002);
+            p.push_back ({dx, dy});
+        }
+        std::string message = "Test 7. Random points #" + std::to_string(i);
+        bool status = closestPairCompare<iter, long double> (p.begin(), p.end(), ofs_log, message);
+        if (! status)
+            throw std::runtime_error ("Test failed. Terminating. See log for details" );
+    }
+}
 
 void readLog (const std::string& file, bool readFailedOnly = false)
 {
@@ -212,6 +243,7 @@ void runTests (std::ofstream& ofs_log)
     test4 (ofs_log);
     test5 (ofs_log);
     test6 (ofs_log, 100, 20);
+    test7 (ofs_log, 100, 200);
 }
 
 void testRandom()
