@@ -83,7 +83,7 @@ namespace syfo {
         bool operator()(const Point<T>& a, const Point<T>& b) {return a.x < b.x;}
     };
     
-    
+    /** Redundant? */
     template <typename T>
     void sortBy (std::vector<Point<T>>& points, bool sortByX = true)
     {
