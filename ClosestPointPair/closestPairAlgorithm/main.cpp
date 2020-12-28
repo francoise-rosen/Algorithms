@@ -105,7 +105,7 @@ void test1(std::ofstream& ofs_log, bool terminateOnFailure = false)
     };
     using iterator_type = std::vector<syfo::Point<double>>::iterator;
     bool status = closestPairCompare<iterator_type, double> (points.begin(), points.end(), ofs_log, "simple_copy");
-    if (! status)
+    if ( (! status) && (terminateOnFailure) )
         throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
@@ -120,7 +120,7 @@ void test2 (std::ofstream& ofs_log, bool terminateOnFailure = false)
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
     bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same x coordinates");
-    if (! status)
+    if ( (! status) && (terminateOnFailure) )
         throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
@@ -136,7 +136,7 @@ void test3 (std::ofstream& ofs_log, bool terminateOnFailure = true)
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
     bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "same y coordinates");
-    if (! status)
+    if ( (! status) && (terminateOnFailure) )
         throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
@@ -152,7 +152,7 @@ void test4 (std::ofstream& ofs_log, bool terminateOnFailure = true)
     };
     using iter = std::vector<syfo::Point<int>>::iterator;
     bool status = closestPairCompare<iter, int> (p.begin(), p.end(), ofs_log, "all points are the same");
-    if (! status)
+    if ( (! status) && (terminateOnFailure) )
         throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
@@ -168,7 +168,7 @@ void test5 (std::ofstream& ofs_log, bool terminateOnFailure = true)
     };
     using iter = std::vector<syfo::Point<float>>::iterator;
     bool status = closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, "all points are equally spaced");
-    if (! status)
+    if ( (! status) && (terminateOnFailure) )
         throw std::runtime_error ("Test failed. Terminating. See log for details" );
 }
 
@@ -187,7 +187,7 @@ void test6 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminat
         }
         std::string message = "Test 6. Random points #" + std::to_string(i);
         bool status = closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, message);
-        if (! status)
+        if ( (! status) && (terminateOnFailure) )
             throw std::runtime_error ("Test failed. Terminating. See log for details" );
     }
 }
@@ -207,7 +207,7 @@ void test7 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminat
         }
         std::string message = "Test 7. Random points #" + std::to_string(i);
         bool status = closestPairCompare<iter, long double> (p.begin(), p.end(), ofs_log, message);
-        if (! status)
+        if ( (! status) && (terminateOnFailure) )
             throw std::runtime_error ("Test failed. Terminating. See log for details" );
     }
 }
