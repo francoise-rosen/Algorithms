@@ -11,7 +11,7 @@
 #include <cassert>
 #include <math.h>
 #include "ClosestPair.h"
-
+#include "MergeSort.h"
 
 
 void printPoints (const std::vector<syfo::Point<double>>& array, const std::string& label = "")
@@ -112,11 +112,13 @@ void testBruteForce()
     
     std::pair<ForwardIterator, ForwardIterator> closestPair = syfo::findClosestDistance<ForwardIterator, double> (points.begin(), points.end());
     
-    sortBy (points);
+    syfo::msort (points.begin(), points.end(), syfo::SortX<T>());
     testPrint (points);
     
     std::pair<ForwardIterator, ForwardIterator> closestPairBruteForce = bruteForce<ForwardIterator, double> (points.begin(), points.end());
-    if (closestPair == closestPairBruteForce)
+    
+    /** Test against BruteForce algo, which we assume is correct by definition. */
+    if (syfo::dist<ForwardIterator, double> (closestPair) == syfo::dist<ForwardIterator, double> (closestPairBruteForce))
     {
         std::cout << "Pair:\n" << *closestPair.first << " " << *closestPair.second << '\n';
 

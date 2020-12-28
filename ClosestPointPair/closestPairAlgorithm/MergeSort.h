@@ -134,6 +134,7 @@ namespace syfo
      @param last1 is the last element of the left subrange.
      @param first2 is the begin() of the right subrange.
      @param last2 is the last element of the right subrange.
+     @param comp a binary function that accepts two elements in the range as arguments, returns bool.
      */
     template <typename ForwardIterator, typename Compare>
     void merge (ForwardIterator first1, ForwardIterator last1, ForwardIterator first2, ForwardIterator last2, Compare comp)

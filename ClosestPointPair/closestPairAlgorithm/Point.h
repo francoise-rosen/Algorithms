@@ -38,9 +38,16 @@ namespace syfo {
     template <typename T>
     T dist (std::pair<Point<T>, Point<T>>& p)
     {
-        return sqrt ( (p.first.x - p.second.x) *  (p.first.x - p.second.x) + (p.first.y - p.second.y) * (p.first.y - p.second.y) );
+        return sqrt ( (p.first.x - p.second.x) * (p.first.x - p.second.x) + (p.first.y - p.second.y) * (p.first.y - p.second.y) );
     }
     
+    template <typename ForwardIterator, typename T>
+    T dist (std::pair<ForwardIterator, ForwardIterator> p)
+    {
+        return sqrt ( ((*p.first).x - (*p.second).x) * ((*p.first).x - (*p.second).x) + ((*p.first).y - (*p.second).y) * ((*p.first).y - (*p.second).y) );
+    }
+    
+    // Use it instead std::pair<Point, Point>
     template <typename T>
     class PointPair
     {
@@ -82,37 +89,7 @@ namespace syfo {
     {
         bool operator()(const Point<T>& a, const Point<T>& b) {return a.x < b.x;}
     };
-    
-    /** Redundant? */
-    template <typename T>
-    void sortBy (std::vector<Point<T>>& points, bool sortByX = true)
-    {
-        if (sortByX)
-        {
-            std::sort (points.begin(), points.end(), [&] (Point<T> p1, Point<T> p2) {return p1.x < p2.x;});
-        }
-        else
-        {
-            std::sort (points.begin(), points.end(), [&] (Point<T> p1, Point<T> p2) {return p1.y < p2.y;});
-        }
-    }
-    
-    template <typename T>
-    std::vector<Point<T>> sortBy (const std::vector<Point<T>>& points, bool sortByX = true)
-    {
-        std::vector<Point<T>> sortedPoints (points.size());
-        std::copy (points.begin(), points.end(), sortedPoints.begin());
-        if (sortByX)
-        {
-            std::sort (points.begin(), points.end(), [&] (Point<T> p1, Point<T> p2) {return p1.x < p2.x;});
-        }
-        else
-        {
-            std::sort (points.begin(), points.end(), [&] (Point<T> p1, Point<T> p2) {return p1.y < p2.y;});
-        }
-        // move ?
-        return sortedPoints;
-    }
+
 }
 
 #endif /* Point_h */

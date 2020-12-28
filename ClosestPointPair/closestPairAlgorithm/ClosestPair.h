@@ -107,20 +107,9 @@ namespace  syfo {
     template <typename ForwardIterator, typename T>
     std::pair<ForwardIterator, ForwardIterator> findClosestDistance (ForwardIterator first, ForwardIterator last)
     {
-        //std::sort (first, last, SortX<T>());
         syfo::msort (first, last, SortX<T>());
         return closestPair<ForwardIterator, T> (first, last);
     }
-    
-//    template <typename ForwardIterator, typename T>
-//    std::pair<ForwardIterator, ForwardIterator> findClosestDistance (std::vector<syfo::Point<T>>& points)
-//    {
-//        sortBy (points, true);
-//        // how to move it?
-//        //std::vector<Point<T>> pointsY {sortBy (points, false)};
-//
-//        return closestPair<ForwardIterator, T> (points.begin(), points.end());
-//    }
 }
 
 
