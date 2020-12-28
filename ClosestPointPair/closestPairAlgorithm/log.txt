@@ -1,0 +1,5 @@
+Passed: simple_copy. Pair: [21.01, 21.008] and [21.01, 21.009]
+Passed: same x coordinates. Pair: [1, 35] and [1, 34]
+Passed: same y coordinates. Pair: [10, 2] and [11, 2]
+Passed: all points are the same. Pair: [10, 10] and [10, 10]
+Passed: all points are equally spaced. Pair: [1, 1] and [2, 2]

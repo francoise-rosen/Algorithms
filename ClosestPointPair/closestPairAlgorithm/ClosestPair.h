@@ -44,6 +44,8 @@ namespace  syfo {
     
     /** @return pair of iterators to the closest pair of pointers within the strip
         Note that this changes the pair d!
+        In case there are several equally spaced points, it will return the pair of
+        iterators to either of those.
      */
     template <typename ForwardIterator, typename T>
     std::pair<ForwardIterator, ForwardIterator> splitPair (ForwardIterator first, ForwardIterator last, ForwardIterator middle, std::pair<ForwardIterator, ForwardIterator> d) noexcept
@@ -52,8 +54,7 @@ namespace  syfo {
         std::pair<ForwardIterator, ForwardIterator> closestPairFromSplit = d;
         /** I want to find exact pair of points, not just the distance,
             so I can mark them graphically.
-            Therefore a container of points lying within the strip contains iterators to those
-            points, sorted by y coordinate.
+            Therefore, a container of points lying within the strip contains iterators (not just values!) to those points, sorted by y coordinate.
          */
         std::vector<ForwardIterator> strip;
         for (ForwardIterator it = first; it != last; ++it)

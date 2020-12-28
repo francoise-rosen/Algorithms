@@ -1,0 +1,1 @@
+Passed: simple_copy. Pair: [21.01, 21.008] and [21.01, 21.009]

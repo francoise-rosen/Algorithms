@@ -28,6 +28,7 @@
 		9EC5718F258FB05A0005A54B /* ClosestPair.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClosestPair.h; sourceTree = "<group>"; };
 		9EC57190258FB0650005A54B /* MergeSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MergeSort.h; sourceTree = "<group>"; };
 		9EC57191258FB0BE0005A54B /* Point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
+		9EE68FA8259A695300098C54 /* log.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = log.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +65,7 @@
 				9EC5718F258FB05A0005A54B /* ClosestPair.h */,
 				9EC57190258FB0650005A54B /* MergeSort.h */,
 				9EC57191258FB0BE0005A54B /* Point.h */,
+				9EE68FA8259A695300098C54 /* log.txt */,
 			);
 			path = closestPairAlgorithm;
 			sourceTree = "<group>";
