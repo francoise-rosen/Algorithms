@@ -28,7 +28,7 @@ namespace syfo {
         
     };
     
-    // helpers
+    /** Calculate distance between two points. */
     template <typename T>
     T dist (const Point<T>& p1, const Point<T>& p2)
     {
@@ -41,13 +41,13 @@ namespace syfo {
         return sqrt ( (p.first.x - p.second.x) * (p.first.x - p.second.x) + (p.first.y - p.second.y) * (p.first.y - p.second.y) );
     }
     
-    template <typename ForwardIterator, typename T>
-    T dist (std::pair<ForwardIterator, ForwardIterator> p)
+    template <typename InputIterator, typename T>
+    T dist (std::pair<InputIterator, InputIterator> p)
     {
         return sqrt ( ((*p.first).x - (*p.second).x) * ((*p.first).x - (*p.second).x) + ((*p.first).y - (*p.second).y) * ((*p.first).y - (*p.second).y) );
     }
     
-    // Use it instead std::pair<Point, Point>
+    // Can be used instead of std::pair<Point, Point>
     template <typename T>
     class PointPair
     {
@@ -78,6 +78,7 @@ namespace syfo {
         Point<T> a, b;
     };
     
+    /** Functional objects for sorting Points according to either x or y. */
     template <typename T>
     struct SortY
     {

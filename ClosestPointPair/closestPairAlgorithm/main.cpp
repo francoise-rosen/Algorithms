@@ -137,11 +137,85 @@ void testBruteForce()
     
 }
 
+//====================================================================================
+// BASIC TESTS
+//====================================================================================
+
+template <typename ForwardIterator>
+void printAll (ForwardIterator first, ForwardIterator last)
+{
+    while (first != last)
+    {
+        std::cout << *first << '\n';
+        ++first;
+    }
+}
+
+// FUNCTION TO COMPARE BRUTE FORCE AND CLOSEST PAIR ALGORITHM RESULTS
+template <typename ForwardIterator, typename T>
+bool closestPairCompare (ForwardIterator first, ForwardIterator last, const std::string test_label = "")
+{
+    bool testStatus {false};
+    typename std::iterator_traits<ForwardIterator>::difference_type size {std::distance (first, last)};
+    using Type = typename std::iterator_traits<ForwardIterator>::value_type;
+    std::vector<Type> array_copy (size);
+    syfo::copy (first, last, array_copy.begin());
+    
+    /** Does not compile if I use an array. With vector it does. */
+    std::pair<ForwardIterator, ForwardIterator> closestPairBruteForce = bruteForce<ForwardIterator, double> (array_copy.begin(), array_copy.end());
+    std::pair<ForwardIterator, ForwardIterator> closestPairAlgorithm = syfo::findClosestDistance<ForwardIterator, T> (first, last);
+    
+    testStatus = (syfo::dist<ForwardIterator, T> (closestPairBruteForce) == syfo::dist<ForwardIterator, T>(closestPairAlgorithm)) ? true : false;
+    
+    if (testStatus)
+    {
+        std::string message {"Test passed"};
+        std::cout << "Pair: " << *closestPairAlgorithm.first << " and " << *closestPairAlgorithm.second << '\n';
+    }
+    else
+    {
+        std::string message {"Test failed"};
+        std::cout << "Found pair: " << *closestPairAlgorithm.first << " and " << *closestPairAlgorithm.second << '\n'
+        << "Must be: " << *closestPairBruteForce.first << " and " << *closestPairBruteForce.second << '\n';
+    }
+    return testStatus;
+}
+
+// INPUTS
+/** Test 1 - the closest pair is always split if sorted by x,
+    so split function must find the closest distance. */
+void test1()
+{
+    std::vector<syfo::Point<double>> points
+    {
+        {0.0, 1.0},
+        {10.0, 10.0},
+        {28.9, 11},
+        {100, 6},
+        {2.2, 10.1},
+        {5, 0.1},
+        {5, -0.4},
+        {0.1, 19},
+        {7.2, 9.9},
+        {21.01, 21.008},
+        {21.01, 21.009}
+    };
+    using iterator_type = std::vector<syfo::Point<double>>::iterator;
+    printAll (points.begin(), points.end());
+    bool test = closestPairCompare<iterator_type, double> (points.begin(), points.end(), "simple_copy");
+    if (test)
+        std::cout << "Passed\n";
+    else
+        std::cout << "Failed\n";
+}
+
 int main(int argc, const char * argv[]) {
     
     try {
+        test1();
+        //testBruteForce();
         
-        testBruteForce<double, typename std::vector<syfo::Point<double>>::iterator>();
+        
     
     } catch (std::exception& e) {
         std::cerr << e.what();

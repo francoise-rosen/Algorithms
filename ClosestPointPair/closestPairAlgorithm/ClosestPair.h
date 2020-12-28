@@ -50,6 +50,11 @@ namespace  syfo {
     {
         T delta = dist(*d.first, *d.second);
         std::pair<ForwardIterator, ForwardIterator> closestPairFromSplit = d;
+        /** I want to find exact pair of points, not just the distance,
+            so I can mark them graphically.
+            Therefore a container of points lying within the strip contains iterators to those
+            points, sorted by y coordinate.
+         */
         std::vector<ForwardIterator> strip;
         for (ForwardIterator it = first; it != last; ++it)
         {
@@ -60,7 +65,9 @@ namespace  syfo {
         }
         
         /** Sort the strip items in respect to their y coordinate. */
-        sort (strip.begin(), strip.end(), [] (ForwardIterator a, ForwardIterator b) { return (*a).y < (*b).y;});
+//        sort (strip.begin(), strip.end(), [] (ForwardIterator a, ForwardIterator b) { return (*a).y < (*b).y;});
+        msort (strip.begin(), strip.end(), [] (ForwardIterator a, ForwardIterator b)
+               { return (*a).y < (*b).y;});
         for (int i = 0; i < strip.size(); ++i)
         {
             /* The inner loop runs at most 7 times! (Worst case scenario)
