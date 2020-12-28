@@ -216,7 +216,7 @@ void testDynamicArray (const int& min, const int& max, const unsigned& arraySize
 void readLog (const std::string& file_name)
 {
     std::ifstream ifs_log {file_name};
-    if (!ifs_log)
+    if (! ifs_log)
         throw std::runtime_error ("Bad file for reading");
 
     if (ifs_log.is_open())
