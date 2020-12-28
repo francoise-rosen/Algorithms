@@ -13,6 +13,7 @@
 #include "ClosestPair.h"
 
 
+
 void printPoints (const std::vector<syfo::Point<double>>& array, const std::string& label = "")
 {
     std::cout << "Points ";
