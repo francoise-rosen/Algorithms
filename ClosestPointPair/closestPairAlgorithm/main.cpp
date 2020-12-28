@@ -11,8 +11,32 @@
 #include <string>
 #include <cassert>
 #include <math.h>
+#include <random>
 #include "ClosestPair.h"
 #include "MergeSort.h"
+
+//====================================================================================
+// Basic Random Number generator
+//====================================================================================
+namespace Random
+{
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen (static_cast<std::mt19937::result_type>(seed));
+}
+
+template <typename T>
+T randomValueInRange (const T& min, const T& max)
+{
+    std::uniform_real_distribution<T> d {min, max};
+    return d (Random::gen);
+}
+
+template <>
+int randomValueInRange (const int& min, const int& max)
+{
+    std::uniform_int_distribution<> d {min, max};
+    return d (Random::gen);
+}
 
 //====================================================================================
 // BASIC TESTS
@@ -79,7 +103,6 @@ void test1(std::ofstream& ofs_log, bool terminateOnFailure = true)
         {21.01, 21.009}
     };
     using iterator_type = std::vector<syfo::Point<double>>::iterator;
-    printAll (points.begin(), points.end());
     closestPairCompare<iterator_type, double> (points.begin(), points.end(), ofs_log, "simple_copy");
 }
 
@@ -138,6 +161,25 @@ void test5 (std::ofstream& ofs_log, bool terminateOnFailure = true)
     closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, "all points are equally spaced");
 }
 
+/** Test 6. Positive and negative values of x and y. */
+void test6 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminateOnFailure = true)
+{
+    for (int i = 0; i < numRolls; ++i)
+    {
+        std::vector<syfo::Point<float>> p;
+        for (int j = 0; j < size; ++j)
+        {
+            float fx = randomValueInRange<float> (-300.0f, 300.0f);
+            float fy = randomValueInRange<float> (-100.0f, 100.0f);
+            p.push_back({fx, fy});
+        }
+        using iter = std::vector<syfo::Point<float>>::iterator;
+        std::string message = "Random points #" + std::to_string(i);
+        closestPairCompare<iter, float> (p.begin(), p.end(), ofs_log, message);
+    }
+}
+
+// very small space between points
 
 void readLog (const std::string& file, bool readFailedOnly = false)
 {
@@ -169,6 +211,15 @@ void runTests (std::ofstream& ofs_log)
     test3 (ofs_log);
     test4 (ofs_log);
     test5 (ofs_log);
+    test6 (ofs_log, 100, 20);
+}
+
+void testRandom()
+{
+    double d = randomValueInRange<double> (0.0, 1.0);
+    float f = randomValueInRange<float> (0.0f, 1.0f);
+    int i = randomValueInRange (1, 11);
+    std::cout << i << '\n' << f << '\n' << d << '\n';
 }
 
 int main(int argc, const char * argv[]) {
@@ -186,7 +237,8 @@ int main(int argc, const char * argv[]) {
         
         runTests (ofs_log);
         ofs_log.close();
-        readLog (file);
+        //readLog (file);
+        testRandom();
     
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';;
