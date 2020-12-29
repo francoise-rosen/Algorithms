@@ -212,7 +212,7 @@ void test7 (std::ofstream& ofs_log, const int& numRolls, int size, bool terminat
     }
 }
 
-void readLog (const std::string& file, bool readFailedOnly = false)
+void readLog (const std::string& file)
 {
     std::ifstream ifs_log {file};
     if (! ifs_log)
@@ -221,17 +221,23 @@ void readLog (const std::string& file, bool readFailedOnly = false)
         throw std::runtime_error (message);
     }
     
-    if (readFailedOnly)
+    /** Count passed and failed tests. */
+    int countAllTests {0}, countFailedTests {0};
+    const std::string keyf {"Failed"};
+    const std::string keyp {"Passed"};
+    while (ifs_log)
     {
-        // check if the line starts with "Failed"
+        std::string line;
+        std::getline (ifs_log, line);
+        if (std::string(line, 0, keyf.size()) == keyf)
+            ++countFailedTests;
+        else if (std::string(line, 0, keyp.size()) == keyp)
+            ++countAllTests;
     }
-    else
-    {
-        for (char ch; ifs_log.get (ch);)
-        {
-            std::cout << ch;
-        }
-    }
+    
+    /** Print out the result in console. */
+    std::string message = (countFailedTests != 0) ? std::to_string(countFailedTests) + " tests failed! \nPlease check the log.txt for details." : "All tests (" + std::to_string(countAllTests) + ") passed!";
+    std::cout << message << '\n';
 }
 
 void runTests (std::ofstream& ofs_log)
@@ -254,6 +260,13 @@ void testRandom()
     std::cout << i << '\n' << f << '\n' << d << '\n';
 }
 
+void testFailedEntry (std::ofstream& ofs_log)
+{
+    if (! ofs_log)
+        throw std::runtime_error ("BAD");
+    ofs_log << "Failed. Bad test detected\n";
+}
+
 int main(int argc, const char * argv[]) {
     
     try {
@@ -266,11 +279,10 @@ int main(int argc, const char * argv[]) {
             const std::string message = "Bad file name: " + file;
             throw std::runtime_error (message);
         }
-        
+        //testFailedEntry (ofs_log);
         runTests (ofs_log);
         ofs_log.close();
-        //readLog (file);
-        testRandom();
+        readLog (file);
     
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';;
