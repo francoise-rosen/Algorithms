@@ -53,7 +53,12 @@ void charToInt ()
     int num = std::atoi (word);
     std::cout << num << '\n';
     std::cout << sum << '\n';
-}
+    
+    // Single typcasting?
+    char ch = '5';
+    int num3 = (int)ch - 48;
+    std::cout << ch << " == " << num3 << '\n';
+ }
 
 void skipToInt()
 {
@@ -110,31 +115,28 @@ int getIntInRange (int min, int max)
 void runNumTimes (const int& numRolls, const int& min, const int& max)
 {
     int count {0};
-    std::string term = "stop";
-    while ((count < numRolls))
+    const std::string term = "stop";
+    while (count < numRolls)
     {
-        std::string word;
         std::cout << "Please enter a number between " << min << " and " << max
-        << " or terminate the program with word stop\n";
-        for (char ch; std::cin.get(ch);)
+        << " .\nOr terminate the program with word stop.\n";
+        for (char ch; std::cin >> ch;)
         {
-            if (! isalpha (ch))
+            if (ch == term[0])
             {
-                
+                std::string word;
+                std::cin.unget();
+                std::cin >> word;
+                if (word == term)
+                    return;
+            }
+            else
+            {
                 std::cin.unget();
                 int temp = getIntInRange (min, max);
                 std::cout << digitalRoot (temp) << '\n';
                 ++count;
                 break;
-            }
-            else
-            {
-                std::cout << ch << '\n';
-                std::string temp;
-                std::cin.unget();
-                std::cin >> temp;
-                if (word == temp)
-                    return;
             }
             
         }
@@ -150,6 +152,7 @@ int main(int argc, const char * argv[]) {
         int min = 0;
         int max = 100000;
         runNumTimes(5, min, max);
+        //charToInt();
     }
     catch (std::exception& e)
     {
