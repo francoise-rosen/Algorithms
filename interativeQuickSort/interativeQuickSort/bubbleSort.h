@@ -21,7 +21,6 @@ template <typename ForwardIterator>
 void bubbleSort (ForwardIterator first, ForwardIterator last)
 {
     typename std::iterator_traits<ForwardIterator>::difference_type size, i;
-    typename std::iterator_traits<ForwardIterator>::value_type T;
     size = std::distance (first, last);
     
     for (i = 0; i < size; ++i)
