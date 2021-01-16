@@ -25,13 +25,13 @@ void makeSet (std::set<int>& result, std::vector<int>& v)
             while ((*current == *next) && (next != v.end()))
                 ++next;
             current = next;
-            ++next;
         }
         else
         {
             result.insert (*current);
-            ++current; ++next;
+            ++current;
         }
+        ++next;
     }
 }
 
