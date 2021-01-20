@@ -30,8 +30,47 @@ int getRandomInt (const int& min, const int& max)
     return value (random_gen::generator);
 }
 
+template <typename C>
+void printAll (const C& container)
+{
+    if (container.begin() == container.end())
+        return;
+    std::cout << "[" << container[0] << ",";
+    for (int i = 1; i < container.size() - 1; ++i)
+    {
+        if (i%10 == 0)
+            std::cout << '\n';
+        std::cout << container[i] << ",";
+    }
+    std::cout << container[container.size() - 1] << "]";
+        
+}
+
+
 // TESTS
 // SPECIAL CASES
+
+void quickSortTest1()
+{
+    std::vector<int> v {9, 19, 0, 2, 1, 11, 290, 521, 72, 3, -5};
+    std::vector<int> sortedV {-5, 0, 1, 2, 3, 9, 11, 19, 72, 290, 521 };
+    int numRec1 = sfd::qsort (v.begin(), v.end());
+    int numRec2 = sfd::qsort (sortedV.begin(), sortedV.end());
+    printAll(v);
+    std::cout << "\nNum of recursive calls in v of size: " << v.size() << " is " <<  numRec1 << '\n';
+    printAll(sortedV);
+    
+    std::cout << "\nNum of recursive calls in sorted v of size: " << sortedV.size() << " is " << numRec2 << '\n';
+}
+
+void testCounter ()
+{
+    sfd::Counter c;
+    for (int i = 0; i < 10; ++i)
+        ++c;
+    std::cout << c.get() << '\n';
+    
+}
 
 // RANDOM FILL
 
@@ -39,7 +78,7 @@ int getRandomInt (const int& min, const int& max)
 
 int main(int argc, const char * argv[]) {
     try {
-        
+        quickSortTest1();
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
         return 1;
