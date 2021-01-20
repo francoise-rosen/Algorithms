@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/sfd_macbook/Documents/Development/Repositories/Algorithms/ClosestPointPair/closestPairAlgorithm"
+      customWorkingDirectory = "/Users/sfd_macbook/Documents/Development/Repositories/For-Sport/ClosestPointPair/closestPairAlgorithm"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

@@ -27,6 +27,8 @@
 		9E62C2EF25ADE217007D2FF1 /* interativeQuickSort */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = interativeQuickSort; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E62C2F225ADE217007D2FF1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9E62C2F925ADE22A007D2FF1 /* quickSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quickSort.h; sourceTree = "<group>"; };
+		9EA9490725B6372500736D93 /* selectionSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = selectionSort.h; sourceTree = "<group>"; };
+		9EA9490825B6373500736D93 /* insertionSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = insertionSort.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,8 @@
 				9E62C2F225ADE217007D2FF1 /* main.cpp */,
 				9E62C2F925ADE22A007D2FF1 /* quickSort.h */,
 				9E446EB625AEEA270069C6F3 /* bubbleSort.h */,
+				9EA9490725B6372500736D93 /* selectionSort.h */,
+				9EA9490825B6373500736D93 /* insertionSort.h */,
 			);
 			path = interativeQuickSort;
 			sourceTree = "<group>";
