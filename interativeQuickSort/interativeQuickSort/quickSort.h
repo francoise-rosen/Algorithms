@@ -73,7 +73,6 @@ namespace sfd
         return new_pivot;
     }
     
-    
     template <typename ForwardIterator>
     void quickSort (ForwardIterator first, ForwardIterator last)
     {
@@ -86,6 +85,7 @@ namespace sfd
         quickSort (first, pivotIndex);
         quickSort (pivotIndex + 1, last);
     }
+    
     template <typename ForwardIterator>
     int qsort (ForwardIterator first, ForwardIterator last)
     {
