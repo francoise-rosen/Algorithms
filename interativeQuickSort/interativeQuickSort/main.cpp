@@ -152,6 +152,13 @@ void quickSortTest2()
     std::cout << "\nNum of recursive calls in sorted v of size: " << sortedV.size() << " is " << numRec2 << '\n';
 }
 
+void quickSortRandT2()
+{
+    std::vector<int> container {9, 19, 0, 290};
+    int numRec = sfd::qsortRandom (container.begin(), container.end());
+    printAll (container);
+}
+
 void testCounter ()
 {
     sfd::Counter c;
@@ -172,8 +179,10 @@ void testQuickSortWithRandomFill (const int& numRolls, const int& containerSize)
 
 int main(int argc, const char * argv[]) {
     try {
-        quickSortTest1();
+        //quickSortTest1();
         quickSortTest2();
+        //quickSortRandT2();
+        //std::cout << random_generator::getRandomInt(0, 3) << '\n';
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
         return 1;

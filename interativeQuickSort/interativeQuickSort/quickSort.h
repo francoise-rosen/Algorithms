@@ -101,9 +101,9 @@ namespace sfd
     ForwardIterator partition_rand (ForwardIterator first, ForwardIterator last)
     {
         typename std::iterator_traits<ForwardIterator>::difference_type size, step;
-        size = {std::distance (first, last)};
+        size = std::distance (first, last);
         ForwardIterator pivotIter = first;
-        step = random_generator::getRandomInt (0, static_cast<int>(size));
+        step = random_generator::getRandomInt (0, static_cast<int>(size) - 1);
         std::advance (pivotIter, step);
         /** Method 1: swap pivotIter with first and use partition (first, last). */
         
@@ -111,10 +111,13 @@ namespace sfd
         ForwardIterator pos = first;
         for (ForwardIterator it = first; it != last; ++it)
         {
-            if (*pivotIter > *it)
+//            if ( (pos == pivotIter) && (std::distance(pos, last) > 1))
+//                ++pos;
+            if ( (*pivotIter > *it))
             {
                 /** swap the values at it and pos (the left most greater-than-pivot value. */
-                iter_swap (it, pos);
+                if (it != pos)
+                    iter_swap (it, pos);
                 ++pos;
             }
         }
