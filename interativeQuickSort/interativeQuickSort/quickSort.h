@@ -9,6 +9,7 @@
 #ifndef quickSort_h
 #define quickSort_h
 #include "bubbleSort.h"
+#include "randomGenerator.h"
 #include <string>
 
 namespace sfd
@@ -42,6 +43,7 @@ namespace sfd
     namespace QuickSortRecursionCounter
     {
         static Counter recursionCounterLeftPivot;
+        static Counter recursionCounterRandomPivot;
     }
     
     template <typename ForwardIterator>
@@ -92,6 +94,13 @@ namespace sfd
         QuickSortRecursionCounter::recursionCounterLeftPivot.clear();
         quickSort(first, last);
         return QuickSortRecursionCounter::recursionCounterLeftPivot.get();
+    }
+    
+    // Using random pivot
+    template <typename ForwardIterator>
+    int qsortRandom (ForwardIterator first, ForwardIterator last)
+    {
+        QuickSortRecursionCounter::recursionCounterRandomPivot.clear();
     }
 }
 
