@@ -106,24 +106,29 @@ namespace sfd
         step = random_generator::getRandomInt (0, static_cast<int>(size) - 1);
         std::advance (pivotIter, step);
         /** Method 1: swap pivotIter with first and use partition (first, last). */
-        iter_swap (first, pivotIter);
-        ForwardIterator pos = partition (first, last);
+//        iter_swap (first, pivotIter);
+//        ForwardIterator pos = partition (first, last);
         
-        /** Method 2: use for loop. */
-//        ForwardIterator pos = first;
-//        for (ForwardIterator it = first; it != last; ++it)
-//        {
-////            if ( (pos == pivotIter) && (std::distance(pos, last) > 1))
-////                ++pos;
-//            if ( (*pivotIter > *it))
-//            {
-//                /** swap the values at it and pos (the left most greater-than-pivot value. */
-//                if (it != pos)
-//                    iter_swap (it, pos);
-//                ++pos;
-//            }
-//        }
-//        iter_swap (pos, pivotIter);
+        //* Method 2: use for loop. THIS DOES NOT WORK YET */
+        ForwardIterator pos = first;
+        for (ForwardIterator it = first; it != last; ++it)
+        {
+            if ( (*pivotIter > *it))
+            {
+                /** swap the values at it and pos (the left most greater-than-pivot value. */
+                if (it != pos)
+                    iter_swap (it, pos);
+                ++pos;
+            }
+            if ( (pos == pivotIter) && (std::distance(pos, last) > 1))
+                ++pos;
+        }
+        if (std::distance (pos, pivotIter) > 0)
+            iter_swap (pos, pivotIter);
+        else if (std::distance (pos, pivotIter) < 0)
+        {
+            iter_swap (--pos, pivotIter);
+        }
         return pos;
     }
     
