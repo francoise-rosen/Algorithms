@@ -12,6 +12,8 @@
 #include "randomGenerator.h"
 #include <string>
 
+/** Compare the speed (time), O between left pivot, random method 1, random method 2. */
+
 namespace sfd
 {
     class Counter
@@ -53,6 +55,9 @@ namespace sfd
         *left = *right;
         *right = temp;
     }
+    
+    /** FIRST ELEM PIVOT. */
+    //=====================================================================
     
     template <typename ForwardIterator>
     ForwardIterator partition (ForwardIterator first, ForwardIterator last)
@@ -96,9 +101,29 @@ namespace sfd
         return QuickSortRecursionCounter::recursionCounterLeftPivot.get();
     }
     
-    // Using random pivot
+    /** RANDOM ELEM PIVOT. */
+    
+    // Method 1. use fist elem partitioning
+    //=====================================================================
+    
     template <typename ForwardIterator>
-    ForwardIterator partition_rand (ForwardIterator first, ForwardIterator last)
+    ForwardIterator partition_rand_v1 (ForwardIterator first, ForwardIterator last)
+    {
+        typename std::iterator_traits<ForwardIterator>::difference_type size, step;
+        size = std::distance (first, last);
+        ForwardIterator pivotIter = first;
+        step = random_generator::getRandomInt (0, static_cast<int>(size) - 1);
+        std::advance (pivotIter, step);
+        /** Method 1: swap pivotIter with first and use partition (first, last). */
+        iter_swap (first, pivotIter);
+        ForwardIterator pos = partition (first, last);
+        
+        return pos;
+    }
+    // Method 1. leave the random pivot in place
+    //=====================================================================
+    template <typename ForwardIterator>
+    ForwardIterator partition_rand_v2 (ForwardIterator first, ForwardIterator last)
     {
         typename std::iterator_traits<ForwardIterator>::difference_type size, step;
         size = std::distance (first, last);
@@ -138,10 +163,9 @@ namespace sfd
         if (std::distance (first, last) <= 1)
             return;
         ++QuickSortRecursionCounter::recursionCounterRandomPivot;
-        ForwardIterator pivotIndex = partition_rand (first, last);
+        ForwardIterator pivotIndex = partition_rand_v2 (first, last);
         quickSortRandom (first, pivotIndex);
         quickSortRandom (pivotIndex + 1, last);
-        
     }
     
     template <typename ForwardIterator>
