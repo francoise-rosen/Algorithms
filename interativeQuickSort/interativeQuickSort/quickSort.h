@@ -129,6 +129,7 @@ namespace sfd
         size = std::distance (first, last);
         ForwardIterator pivotIter = first;
         step = random_generator::getRandomInt (0, static_cast<int>(size) - 1);
+        std::cout << "step: " << step << '\n';
         std::advance (pivotIter, step);
         ForwardIterator pos = first;
         for (ForwardIterator it = first; it != last; ++it)
@@ -140,7 +141,7 @@ namespace sfd
                     iter_swap (it, pos);
                 ++pos;
             }
-            if ( (pos == pivotIter) && (std::distance(pos, last) > 1))
+            if ( (pos == pivotIter) && (it != pivotIter) && (std::distance(pos, last) > 1))
                 ++pos;
         }
         if (std::distance (pos, pivotIter) > 0)

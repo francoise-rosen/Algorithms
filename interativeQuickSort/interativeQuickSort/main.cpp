@@ -159,6 +159,14 @@ void quickSortRandT2()
     printAll (container);
 }
 
+void quickSortRandT3()
+{
+    // this must fail w/ method2, if the pivot is at index 2
+    std::vector<int> container {2, 0, 12, 8};
+    sfd::qsortRandom (container.begin(), container.end());
+    printAll (container);
+}
+
 void testCounter ()
 {
     sfd::Counter c;
@@ -180,8 +188,9 @@ void testQuickSortWithRandomFill (const int& numRolls, const int& containerSize)
 int main(int argc, const char * argv[]) {
     try {
         //quickSortTest1();
-        quickSortTest2();
+        //quickSortTest2();
         //quickSortRandT2();
+        quickSortRandT3();
         //std::cout << random_generator::getRandomInt(0, 3) << '\n';
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
