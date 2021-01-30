@@ -27,16 +27,16 @@ int partition (ForwardIterator first, ForwardIterator last, ForwardIterator pivo
     
 }
 
-template <typename ForwardIterator, typename T>
-int nSmallestValue (ForwardIterator first, ForwardIterator last, T value)
+template <typename ForwardIterator>
+int nSmallestValue (ForwardIterator first, ForwardIterator last, int index)
 {
     // recursive call of just one subrange, where the value is
 }
 
-template <typename C, typename T>
-int nth_smallest (C container, T value)
+template <typename C>
+int nth_smallest (C container, int index)
 {
-    return nSmallestValue (container.begin(), container.end(), value);
+    return nSmallestValue (container.begin(), container.end(), index);
 }
 
 int main(int argc, const char * argv[]) {
