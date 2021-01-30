@@ -22,21 +22,34 @@ int getRandomInt (const int& min, const int& max)
 }
 
 template <typename ForwardIterator>
-int partition (ForwardIterator first, ForwardIterator last, ForwardIterator pivot)
+ForwardIterator partition (ForwardIterator first, ForwardIterator last)
 {
-    
+    typename std::iterator_traits<ForwardIterator>::difference_type step;
 }
 
 template <typename ForwardIterator>
-int nSmallestValue (ForwardIterator first, ForwardIterator last, int index)
+ForwardIterator nSmallestValue (ForwardIterator first, ForwardIterator last, int index)
 {
     // recursive call of just one subrange, where the value is
+    ForwardIterator pivotIndex = partition (first, last);
+    if (std::distance (first, pivotIndex) > index)
+    {
+        return nSmallestValue (first, pivotIndex, index);
+    }
+    if (std::distance (first, pivotIndex) < index)
+    {
+        return nSmallestValue(++pivotIndex, last, index);
+    }
+    return pivotIndex;
+    
 }
 
-template <typename C>
-int nth_smallest (C container, int index)
+template <typename C, typename T>
+T nth_smallest (C container, int index)
 {
-    return nSmallestValue (container.begin(), container.end(), index);
+    auto p = nSmallestValue (container.begin(), container.end(), index);
+    T val = *p;
+    return val;
 }
 
 int main(int argc, const char * argv[]) {
