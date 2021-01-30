@@ -53,7 +53,7 @@ def test1():
     print (index4)
 
 def testRand (numRolls, size):
-    for roll in range (numRolls):
+    for _ in range (numRolls):
         temp = list (map (lambda _: random.randrange(0, 50), range (size)))
         temp_index = random.randrange (1, size)
         temp_value = nthSmallest (temp, temp_index)
