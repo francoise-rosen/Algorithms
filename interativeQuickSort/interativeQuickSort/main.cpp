@@ -19,13 +19,15 @@ void printAll (const C& container)
     if (container.begin() == container.end())
         return;
     std::cout << "[" << container[0] << ",";
-    for (int i = 1; i < container.size() - 1; ++i)
+    for (int i = 1; i < container.size(); ++i)
     {
         if (i%10 == 0)
             std::cout << '\n';
-        std::cout << container[i] << ",";
+        std::cout << container[i];
+        if (i != container.size() - 1)
+            std::cout << ",";
     }
-    std::cout << container[container.size() - 1] << "]";
+    std::cout  << "]";
         
 }
 
@@ -162,7 +164,8 @@ void quickSortRandT2()
 void quickSortRandT3()
 {
     // this must fail w/ method2, if the pivot is at index 2
-    std::vector<int> container {2, 0, 12, 8};
+    //std::vector<int> container {2, 0, 12, 8};
+    std::vector<int> container {4, 2, 1, -2, 19};
     sfd::qsortRandom (container.begin(), container.end());
     printAll (container);
 }

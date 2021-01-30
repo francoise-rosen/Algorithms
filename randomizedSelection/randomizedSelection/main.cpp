@@ -28,15 +28,15 @@ int partition (ForwardIterator first, ForwardIterator last, ForwardIterator pivo
 }
 
 template <typename ForwardIterator, typename T>
-int findIndex (ForwardIterator first, ForwardIterator last, T value)
+int nSmallestValue (ForwardIterator first, ForwardIterator last, T value)
 {
     // recursive call of just one subrange, where the value is
 }
 
 template <typename C, typename T>
-int nOrderStatistic (C container, T value)
+int nth_smallest (C container, T value)
 {
-    return findIndex (container.begin(), container.end(), value);
+    return nSmallestValue (container.begin(), container.end(), value);
 }
 
 int main(int argc, const char * argv[]) {

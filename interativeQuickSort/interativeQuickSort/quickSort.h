@@ -144,12 +144,11 @@ namespace sfd
             if ( (pos == pivotIter) && (std::distance(pos, last) > 1))
                 ++pos;
         }
-        if (std::distance (pos, pivotIter) > 0)
-            iter_swap (pos, pivotIter);
-        else if (std::distance (pos, pivotIter) < 0)
+        if (std::distance (pos, pivotIter) < 0)
         {
-            iter_swap (--pos, pivotIter);
+            --pos;
         }
+        iter_swap (pos, pivotIter);
         return pos;
     }
     
