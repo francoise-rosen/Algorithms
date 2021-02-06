@@ -45,15 +45,14 @@ namespace sfd
     BidirectionalIterator reverse (BidirectionalIterator first, BidirectionalIterator last, BidirectionalIterator first2)
     {
         BidirectionalIterator back = last;
-        --back;
+        --back; // this is a zero terminator!
         BidirectionalIterator result = first2;
-        while (back > first)
+        while (back >= first)
         {
             *result = *back;
             --back;
             ++result;
         }
-        *(++result) = *(first);
         return result;
     }
     
@@ -123,7 +122,7 @@ void reverseCString ()
         ++size;
     char copy[size];
     // with copy
-    sfd::reverse (str + 0, str + size, copy);
+    sfd::reverse (str + 0, str + size - 1, copy);
     std::cout << copy << '\n';
 }
 
