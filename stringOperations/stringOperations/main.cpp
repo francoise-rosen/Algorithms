@@ -121,9 +121,14 @@ void reverseCString ()
     for (auto i = 0; str[i] != 0; ++i )
         ++size;
     char copy[size];
-    // with copy
+    // with copy. if we want to reverse const char* or const char[]
+    // which are immutable, we must copy the string
+    // size - 1 because c_string last char is 0 and must be not swapped!
     sfd::reverse (str + 0, str + size - 1, copy);
     std::cout << copy << '\n';
+    // same without copying
+    sfd::reverse_c(str, str + size - 1);
+    std::cout << str << '\n';
 }
 
 void reverseString ()
