@@ -12,11 +12,11 @@
 /** Reverse. */
 namespace sfd
 {
-    template <typename RandomInterator>
-    void reverse (RandomInterator first, RandomInterator last)
+    template <typename BidirectionalIterator>
+    void reverse (BidirectionalIterator first, BidirectionalIterator last)
     {
-        RandomInterator back = last;
-        --back;
+        BidirectionalIterator back = last;
+        --back; // the last character
         while (first < back)
         {
             std::swap (*first, *back);
@@ -25,18 +25,22 @@ namespace sfd
         }
     }
     
-    template <typename RandomIterator>
-    RandomIterator reverse (RandomIterator first, RandomIterator last, RandomIterator first2)
+    // reverse c string
+    
+    // with copying
+    template <typename BidirectionalIterator>
+    BidirectionalIterator reverse (BidirectionalIterator first, BidirectionalIterator last, BidirectionalIterator first2)
     {
-        RandomIterator back = last;
+        BidirectionalIterator back = last;
         --back;
-        RandomIterator result = first2;
-        while (back != first)
+        BidirectionalIterator result = first2;
+        while (back > first)
         {
             *result = *back;
             --back;
             ++result;
         }
+        *(++result) = *(first);
         return result;
     }
     
@@ -105,8 +109,9 @@ void reverseCString ()
     for (auto i = 0; str[i] != 0; ++i )
         ++size;
     char copy[size];
+    // with copy
     sfd::reverse (str + 0, str + size, copy);
-    std::cout << str << '\n';
+    std::cout << copy << '\n';
 }
 
 void reverseString ()
