@@ -15,13 +15,29 @@ namespace sfd
     template <typename RandomInterator>
     void reverse (RandomInterator first, RandomInterator last)
     {
-        --last;
-        while (first != last + 1)
+        RandomInterator back = last;
+        --back;
+        while (first != back)
         {
-            std::swap (*first, *last);
+            std::swap (*first, *back);
             ++first;
-            --last;
+            --back;
         }
+    }
+    
+    template <typename RandomIterator>
+    RandomIterator reverse (RandomIterator first, RandomIterator last, RandomIterator first2)
+    {
+        RandomIterator back = last;
+        --back;
+        RandomIterator result = first2;
+        while (back != first)
+        {
+            *result = *back;
+            --back;
+            ++result;
+        }
+        return result;
     }
     
     template <typename ForwardIterator>
@@ -73,15 +89,39 @@ void findSubstring()
     std::cout << ((p2 == fsol.end()) ? sound + " is not found " : sound + " is found!\n");
 }
 
+// C STRING
+void printCString (const char* str)
+{
+    for (int i = 0; str[i] != '\0'; ++i)
+    {
+        std::cout << str[i];
+    }
+}
+
+void reverseCString ()
+{
+    char str[] = "0 Jynwheithek 0 ";
+    int size {0};
+    for (auto i = 0; str[i] != 0; ++i )
+        ++size;
+    char copy[size];
+    sfd::reverse (str + 0, str + size, copy);
+    std::cout << str << '\n';
+}
+
+void testReverse ()
+{
+    
+}
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::string rh = "Rhythm and Sound";
-    std::string fsol = "The future sound of london";
-    //auto size = sizeof (fsol) /  sizeof (char);
-    sfd::reverse (rh.begin(), rh.end());
-    sfd::reverse (fsol.begin(), fsol.end());
-    std::cout << fsol;
-    findSubstring();
+    try
+    {
+        reverseCString ();
+    }
+    catch (std::exception& e) {
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
     return 0;
 }
