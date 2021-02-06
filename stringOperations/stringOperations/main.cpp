@@ -26,6 +26,19 @@ namespace sfd
     }
     
     // reverse c string
+    // --last is a 0 terminator char, we won't be swapping it!
+    template <typename BidirectionalIterator>
+    void reverse_c (BidirectionalIterator first, BidirectionalIterator last)
+    {
+        BidirectionalIterator back = last;
+        --back; // 0 terminator
+        while (first < back)
+        {
+            std::swap (*first, *back);
+            ++first;
+            --back;
+        }
+    }
     
     // with copying
     template <typename BidirectionalIterator>
