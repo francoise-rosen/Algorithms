@@ -17,7 +17,7 @@ namespace sfd
     {
         RandomInterator back = last;
         --back;
-        while (first != back)
+        while (first < back)
         {
             std::swap (*first, *back);
             ++first;
@@ -109,15 +109,22 @@ void reverseCString ()
     std::cout << str << '\n';
 }
 
-void testReverse ()
+void reverseString ()
 {
-    
+    std::cout << "Enter a string: ";
+    for (std::string str; std::cin >> str && str != "exit";)
+    {
+        sfd::reverse (str.begin(), str.end());
+        std::cout << str;
+        std::cout << "\nPlease enter a string\nOr terminate the loop with \"exit\" \n";
+    }
 }
 
 int main(int argc, const char * argv[]) {
     try
     {
         reverseCString ();
+        reverseString();
     }
     catch (std::exception& e) {
         std::cerr << e.what() << '\n';
