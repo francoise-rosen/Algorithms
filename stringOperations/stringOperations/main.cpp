@@ -142,6 +142,8 @@ void reverseString ()
     }
 }
 
+// add here proper tests
+
 int main(int argc, const char * argv[]) {
     try
     {
