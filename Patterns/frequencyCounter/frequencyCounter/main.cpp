@@ -61,14 +61,14 @@ bool frequencyCounter (const std::vector<int>& arr1, const std::vector<int>& arr
         return false;
     std::map<int, int> elemArr1;
     std::map<int, int> elemArr2;
-    for (auto elem : arr1)
+    for (auto elem : arr1) // O(n)
     {
-        elemArr1[elem] += 1;
+        (elemArr1.count(elem) > 0) ? elemArr1[elem] += 1 : elemArr1[elem] = 1; // O log(n) -> O (log(n))
     }
     
-    for (auto elem : arr2)
+    for (auto elem : arr2) // O(n)
     {
-        elemArr2[elem] += 1;
+        elemArr2[elem] += 1; // O (log(n)), but is it save, assuming default int is not 0!
     }
     //printMap(elemArr1);
     //printMap(elemArr2);
