@@ -14,7 +14,7 @@ namespace sfd {
     /** Time O(n logn). */
     /** Container C, Elem T must be numerical.
      Find if the second array is squared first*/
-    template <typename C, typename T>
+    template <typename C, typename T = typename C::value_type>
     bool elemSquared (const C& arr1, const C& arr2)
     {
         if (arr1.size() != arr2.size())
@@ -50,7 +50,7 @@ namespace sfd {
     /** Time O(n logn). */
     /** Container C, Elem T must be numerical.
      Find if the second array is squared first*/
-    template <typename C, typename T>
+    template <typename C, typename T = typename C::value_type>
     bool anagramMap (const C& arr1, const C& arr2)
     {
         if (arr1.size() != arr2.size())
@@ -96,25 +96,28 @@ namespace sfd {
         return true;
     }
     
-    /** Actual counter. */
+    /** Actual counters. */
     template <typename C, typename T = typename C::value_type>
     std::map<T, int> frequencyCounter_M1 (const C& container)
     {
         std::map<T, int> dict;
         for (auto unit : container)
         {
-            ++dict[unit];
+            ++dict[unit]; // int must be default constructable!
         }
         return dict;
     }
     
-    template <typename C, typename T>
+    template <typename C, typename T = typename C::value_type>
     std::map<T, int> frequencyCounter_M2 (const C& container)
     {
         std::map<T, int> dict;
         for (auto unit : container)
         {
-            (dict[unit] > 0) ? ++dict[unit] : dict[unit] = 1; // T() must be default constructable!
+            /**
+             // making it safe, since int can be not defaulted to 0, but count will add log(n) time complexity.
+             */
+            (dict.count (unit) > 0) ? ++dict[unit] : dict[unit] = 1;
         }
         return dict;
     }
