@@ -14,7 +14,10 @@
 #include "string"
 /**
    Find if elements of second array are squared elements of first
-   Frequency must match
+   Frequency must match. This employs frequency counter algorithms.
+   naiveCounter - nested for loop O(n*n)
+   freqCounterMap - using map O nlogn
+   freqCounterUMap - using unordered_map O(n) on average, O (n*n) worst case
  */
 
 // helper to print map
