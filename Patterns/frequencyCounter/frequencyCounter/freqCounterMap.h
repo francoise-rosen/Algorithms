@@ -97,7 +97,7 @@ namespace sfd {
     }
     
     /** Actual counter. */
-    template <typename C, typename T = typename std::iterator_traits<typename C::const_iterator>::value_type()>
+    template <typename C, typename T = typename C::value_type>
     std::map<T, int> frequencyCounter_M1 (const C& container)
     {
         std::map<T, int> dict;

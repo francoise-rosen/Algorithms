@@ -157,7 +157,7 @@ void testFreqCounter()
     std::string word;
     for (;sentence >> word;)
         words.push_back (word);
-    std::map<std::string, int> res = sfd::frequencyCounter_M1<vector, std::string> (words);
+    std::map<std::string, int> res = sfd::frequencyCounter_M1<vector> (words);
     for (auto elem : res)
         std::cout << elem.first << " => " << elem.second << '\n';
 }
