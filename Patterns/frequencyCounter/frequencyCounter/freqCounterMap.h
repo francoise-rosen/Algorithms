@@ -95,6 +95,29 @@ namespace sfd {
         
         return true;
     }
+    
+    /** Actual counter. */
+    template <typename C, typename T>
+    std::map<T, int> frequencyCounter_M1 (const C& container)
+    {
+        std::map<T, int> dict;
+        for (auto unit : container)
+        {
+            ++dict[unit];
+        }
+        return dict;
+    }
+    
+    template <typename C, typename T>
+    std::map<T, int> frequencyCounter_M2 (const C& container)
+    {
+        std::map<T, int> dict;
+        for (auto unit : container)
+        {
+            (dict[unit] > 0) ? ++dict[unit] : dict[unit] = 1; // T() must be default constructable!
+        }
+        return dict;
+    }
 }
 
 #endif /* freqCounterMap_h */

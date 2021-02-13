@@ -147,6 +147,14 @@ void testAnagram()
     assert (unmatch1 == false);
 }
 
+void testFreqCounter()
+{
+    std::string sentence = "I wish the milman wound deliver my milk in the mording I wish the milkman would deliver my milk when I am yawning";
+    std::map<std::string, int> res = sfd::frequencyCounter_M1<std::string, std::string>(sentence);
+    for (auto elem : res)
+        std::cout << elem.first << " => " << elem.second << '\n';
+}
+
 
 int main(int argc, const char * argv[]) {
     try {
@@ -156,6 +164,7 @@ int main(int argc, const char * argv[]) {
         //tryAnagram();
         //tryAnagramLine();
         testAnagram();
+        testFreqCounter();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
