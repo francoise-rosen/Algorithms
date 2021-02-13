@@ -61,14 +61,14 @@ bool frequencyCounter (const std::vector<int>& arr1, const std::vector<int>& arr
         return false;
     std::map<int, int> elemArr1;
     std::map<int, int> elemArr2;
-    for (auto elem : arr1) // O(n)
+    for (auto elem : arr1) // O(n) -> O (n * log(n)) :(
     {
         (elemArr1.count(elem) > 0) ? elemArr1[elem] += 1 : elemArr1[elem] = 1; // O log(n) -> O (log(n))
     }
     
     for (auto elem : arr2) // O(n)
     {
-        elemArr2[elem] += 1; // O (log(n)), but is it save, assuming default int is not 0!
+        elemArr2[elem] += 1; // O (log(n)), but is not save, assuming default int is not 0!
     }
     //printMap(elemArr1);
     //printMap(elemArr2);
@@ -90,12 +90,14 @@ void tryNaive()
     std::vector<int> a {1, 2, 3};
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
+    std::vector<int> d {16, 16, 1};
     frequencyCounterNaive(a, b);
     assert (frequencyCounterNaive(a, b) == true);
     assert (frequencyCounterNaive(a, c) == false);
     assert (frequencyCounterNaive(c, b) == false);
     assert (frequencyCounterNaive(a, a) == false);
-    std::cout << "Done\n";
+    assert (frequencyCounterNaive(c, d) == true);
+    std::cout << "Nainve - Done\n";
 }
 
 void tryCounter1()
@@ -103,12 +105,14 @@ void tryCounter1()
     std::vector<int> a {1, 2, 3};
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
+    std::vector<int> d {16, 16, 1};
     frequencyCounter(a, c);
     assert (frequencyCounterNaive(a, b) == true);
     assert (frequencyCounterNaive(a, c) == false);
     assert (frequencyCounterNaive(c, b) == false);
     assert (frequencyCounterNaive(a, a) == false);
-    std::cout << "Done\n";
+    assert (frequencyCounterNaive(c, d) == true);
+    std::cout << "Counter - Done\n";
 }
 
 
