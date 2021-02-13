@@ -79,14 +79,17 @@ bool frequencyCounter (const std::vector<int>& arr1, const std::vector<int>& arr
     {
         elemArr2[elem] += 1; // O (log(n)), but is not save, assuming default int is not 0, however one can find such solutions on the internet!
     }
-    //printMap(elemArr1);
-    //printMap(elemArr2);
+    printMap(elemArr1);
+    printMap(elemArr2);
     if (elemArr1.size() != elemArr2.size())
         return false;
-    typename std::map<int, int>::const_iterator it1, it2;
+    typename std::map<int, int>::const_iterator it1 = elemArr1.begin();
+    typename std::map<int, int>::const_iterator it2 = elemArr2.begin();
     while (it1 != elemArr1.end())
     {
-        if ( (it1->first * it1->first) != (it2->first) || (it1->second) != (it2->second))
+        if ((it1->first * it1->first) != (it2->first))
+            return false;
+        if ((it1->second) != (it2->second))
             return false;
         ++it1; ++it2;
     }
@@ -105,12 +108,25 @@ bool frequencyCounter2 (const std::vector<int>& arr1, const std::vector<int>& ar
     std::unordered_map<int, int> u_map1 {arr1.size()}, u_map2 {arr2.size()}; // O(1)
     for (int i = 0; i < arr1.size(); ++i) // O (n)
     {
-        ++u_map1[arr1[i]];
+        ++u_map1[arr1[i]]; // operator[] - O(1) average, O(n) worst case
         ++u_map2[arr2[i]];
+    }
+    
+    if (u_map1.size() != u_map2.size()) // O(1)
+        return false;
+    
+    for (auto elem : u_map2)
+    {
+        if (u_map1.find (elem.first * elem.first) == u_map1.end()) // O(1) average, O(n) worst case
+            return false;
+        if (u_map1[elem.first * elem.first] != u_map2[elem.first]) // O(1) average, O(n) worst case
+            return false;
     }
     
     printUnorderedMap (u_map1);
     printUnorderedMap (u_map2);
+    
+    
     return true;
 };
 
@@ -135,12 +151,13 @@ void tryCounter1()
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
     std::vector<int> d {16, 16, 1};
-    frequencyCounter(a, c);
-    assert (frequencyCounterNaive(a, b) == true);
-    assert (frequencyCounterNaive(a, c) == false);
-    assert (frequencyCounterNaive(c, b) == false);
-    assert (frequencyCounterNaive(a, a) == false);
-    assert (frequencyCounterNaive(c, d) == true);
+    frequencyCounter (a, c);
+    frequencyCounter (a, b);
+    assert (frequencyCounter(a, b) == true);
+    assert (frequencyCounter(a, c) == false);
+    assert (frequencyCounter(c, b) == false);
+    assert (frequencyCounter(a, a) == false);
+    assert (frequencyCounter(c, d) == true);
     std::cout << "Counter - Done\n";
 }
 
@@ -151,14 +168,21 @@ void tryCounter2()
     std::vector<int> c {4, 1, 4};
     std::vector<int> d {16, 16, 1};
     std::vector<int> e {16, 16, 1, 1};
-    frequencyCounter2(c, d);
+    frequencyCounter2 (c, d);
+    assert (frequencyCounter2(a, b) == true);
+    assert (frequencyCounter2(a, c) == false);
+    assert (frequencyCounter2(c, b) == false);
+    assert (frequencyCounter2(a, a) == false);
+    assert (frequencyCounter2(c, d) == true);
+    assert (frequencyCounter2(c, e) == false);
+    std::cout << "Counter 2 - Done\n";
 }
 
 int main(int argc, const char * argv[]) {
     try {
-        tryNaive();
+        //tryNaive();
         tryCounter1();
-        tryCounter2();
+        //tryCounter2();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
