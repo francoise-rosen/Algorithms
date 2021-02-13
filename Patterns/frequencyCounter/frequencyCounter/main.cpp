@@ -45,6 +45,15 @@ bool frequencyCounterNaive (const std::vector<int>& arr1, const std::vector<int>
     return true;
 }
 
+// helper to print map
+void printMap (const std::map<int, int> myMap)
+{
+    for (auto elem : myMap)
+    {
+        std::cout << elem.first << " = > " << elem.second << '\n';
+    }
+}
+
 /** linear time O(n). */
 bool frequencyCounter (const std::vector<int>& arr1, const std::vector<int>& arr2)
 {
@@ -52,22 +61,61 @@ bool frequencyCounter (const std::vector<int>& arr1, const std::vector<int>& arr
         return false;
     std::map<int, int> elemArr1;
     std::map<int, int> elemArr2;
-    bool match = false;
-    return match;
+    for (auto elem : arr1)
+    {
+        elemArr1[elem] += 1;
+    }
+    
+    for (auto elem : arr2)
+    {
+        elemArr2[elem] += 1;
+    }
+    //printMap(elemArr1);
+    //printMap(elemArr2);
+    if (elemArr1.size() != elemArr2.size())
+        return false;
+    typename std::map<int, int>::const_iterator it1, it2;
+    while (it1 != elemArr1.end())
+    {
+        if ( (it1->first * it1->first) != (it2->first) || (it1->second) != (it2->second))
+            return false;
+        ++it1; ++it2;
+    }
+
+    return true;
+}
+
+void tryNaive()
+{
+    std::vector<int> a {1, 2, 3};
+    std::vector<int> b {4, 1, 9};
+    std::vector<int> c {4, 1, 4};
+    frequencyCounterNaive(a, b);
+    assert (frequencyCounterNaive(a, b) == true);
+    assert (frequencyCounterNaive(a, c) == false);
+    assert (frequencyCounterNaive(c, b) == false);
+    assert (frequencyCounterNaive(a, a) == false);
+    std::cout << "Done\n";
+}
+
+void tryCounter1()
+{
+    std::vector<int> a {1, 2, 3};
+    std::vector<int> b {4, 1, 9};
+    std::vector<int> c {4, 1, 4};
+    frequencyCounter(a, c);
+    assert (frequencyCounterNaive(a, b) == true);
+    assert (frequencyCounterNaive(a, c) == false);
+    assert (frequencyCounterNaive(c, b) == false);
+    assert (frequencyCounterNaive(a, a) == false);
+    std::cout << "Done\n";
 }
 
 
 int main(int argc, const char * argv[]) {
     try {
-        std::vector<int> a {1, 2, 3};
-        std::vector<int> b {4, 1, 9};
-        std::vector<int> c {4, 1, 4};
-        frequencyCounterNaive(a, b);
-        assert (frequencyCounterNaive(a, b) == true);
-        assert (frequencyCounterNaive(a, c) == false);
-        assert (frequencyCounterNaive(c, b) == false);
-        assert (frequencyCounterNaive(a, a) == false);
-        std::cout << "Done\n";
+        tryNaive();
+        tryCounter1();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
