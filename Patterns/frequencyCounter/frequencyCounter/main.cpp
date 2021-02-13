@@ -11,7 +11,8 @@
 #include "naiveCounter.h"
 #include "freqCounterMap.h"
 #include "freqCounterUMap.h"
-#include "string"
+#include <string>
+#include <sstream>
 /**
    Find if elements of second array are squared elements of first
    Frequency must match. This employs frequency counter algorithms.
@@ -149,8 +150,14 @@ void testAnagram()
 
 void testFreqCounter()
 {
-    std::string sentence = "I wish the milman wound deliver my milk in the mording I wish the milkman would deliver my milk when I am yawning";
-    std::map<std::string, int> res = sfd::frequencyCounter_M1<std::string, std::string>(sentence);
+    std::stringstream sentence;
+    sentence << "I wish the milkman wound deliver my milk in the mording I wish the milkman would deliver my milk when I am yawning";
+    using vector = std::vector<std::string>;
+    vector words;
+    std::string word;
+    for (;sentence >> word;)
+        words.push_back (word);
+    std::map<std::string, int> res = sfd::frequencyCounter_M1<vector, std::string> (words);
     for (auto elem : res)
         std::cout << elem.first << " => " << elem.second << '\n';
 }
