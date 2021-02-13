@@ -115,11 +115,11 @@ bool frequencyCounter2 (const std::vector<int>& arr1, const std::vector<int>& ar
     if (u_map1.size() != u_map2.size()) // O(1)
         return false;
     
-    for (auto elem : u_map2)
+    for (auto elem : u_map1)
     {
-        if (u_map1.find (elem.first * elem.first) == u_map1.end()) // O(1) average, O(n) worst case
+        if (u_map2.find (elem.first * elem.first) == u_map1.end()) // O(1) average, O(n) worst case
             return false;
-        if (u_map1[elem.first * elem.first] != u_map2[elem.first]) // O(1) average, O(n) worst case
+        if (u_map2[elem.first * elem.first] != u_map1[elem.first]) // O(1) average, O(n) worst case
             return false;
     }
     
@@ -180,9 +180,9 @@ void tryCounter2()
 
 int main(int argc, const char * argv[]) {
     try {
-        //tryNaive();
+        tryNaive();
         tryCounter1();
-        //tryCounter2();
+        tryCounter2();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
