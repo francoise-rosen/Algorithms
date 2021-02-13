@@ -25,6 +25,9 @@
 /* Begin PBXFileReference section */
 		9EEC021425D7CC8900432F68 /* frequencyCounter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = frequencyCounter; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EEC021725D7CC8900432F68 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9EEC021E25D8081E00432F68 /* naiveCounter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = naiveCounter.h; sourceTree = "<group>"; };
+		9EEC021F25D8084F00432F68 /* freqCounterMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = freqCounterMap.h; sourceTree = "<group>"; };
+		9EEC022025D8085F00432F68 /* freqCounterUMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = freqCounterUMap.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				9EEC021725D7CC8900432F68 /* main.cpp */,
+				9EEC021E25D8081E00432F68 /* naiveCounter.h */,
+				9EEC021F25D8084F00432F68 /* freqCounterMap.h */,
+				9EEC022025D8085F00432F68 /* freqCounterUMap.h */,
 			);
 			path = frequencyCounter;
 			sourceTree = "<group>";
