@@ -12,8 +12,9 @@
 
 namespace sfd
 {
-    /** Naive - quadratic time. */
-    bool frequencyCounterNaive (const std::vector<int>& arr1, const std::vector<int>& arr2)
+    /** Are elements of the second array squared of the first?
+     Naive - quadratic time. */
+    bool elemSquaredNaive (const std::vector<int>& arr1, const std::vector<int>& arr2)
     {
         if (arr1.size() != arr2.size())
             return false;

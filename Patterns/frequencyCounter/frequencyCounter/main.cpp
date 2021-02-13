@@ -36,7 +36,8 @@ void printUnorderedMap (const std::unordered_map<int, int> myMap)
 
 bool isAnagram (const std::string& a, const std::string& b)
 {
-    return true;
+    bool match = sfd::anagramMap<std::string, char> (a, b);
+    return match;
 }
 
 void tryNaive()
@@ -45,12 +46,12 @@ void tryNaive()
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
     std::vector<int> d {16, 16, 1};
-    sfd::frequencyCounterNaive(a, b);
-    assert (sfd::frequencyCounterNaive(a, b) == true);
-    assert (sfd::frequencyCounterNaive(a, c) == false);
-    assert (sfd::frequencyCounterNaive(c, b) == false);
-    assert (sfd::frequencyCounterNaive(a, a) == false);
-    assert (sfd::frequencyCounterNaive(c, d) == true);
+    sfd::elemSquaredNaive(a, b);
+    assert (sfd::elemSquaredNaive(a, b) == true);
+    assert (sfd::elemSquaredNaive(a, c) == false);
+    assert (sfd::elemSquaredNaive(c, b) == false);
+    assert (sfd::elemSquaredNaive(a, a) == false);
+    assert (sfd::elemSquaredNaive(c, d) == true);
     std::cout << "Nainve - Done\n";
 }
 
@@ -61,13 +62,13 @@ void tryCounter1()
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
     std::vector<int> d {16, 16, 1};
-    sfd::frequencyCounterMap<C, int> (a, c);
-    sfd::frequencyCounterMap<C, int> (a, b);
-    bool ab = sfd::frequencyCounterMap<C, int>(a, b);
-    bool ac = sfd::frequencyCounterMap<C, int>(a, c);
-    bool cb = sfd::frequencyCounterMap<C, int>(c, b);
-    bool aa = sfd::frequencyCounterMap<C, int>(a, a);
-    bool cd = sfd::frequencyCounterMap<C, int>(c, d);
+    sfd::elemSquared<C, int> (a, c);
+    sfd::elemSquared<C, int> (a, b);
+    bool ab = sfd::elemSquared<C, int>(a, b);
+    bool ac = sfd::elemSquared<C, int>(a, c);
+    bool cb = sfd::elemSquared<C, int>(c, b);
+    bool aa = sfd::elemSquared<C, int>(a, a);
+    bool cd = sfd::elemSquared<C, int>(c, d);
     assert (ab == true);
     assert (ac == false);
     assert (cb == false);
@@ -93,11 +94,52 @@ void tryCounter2()
     std::cout << "Counter 2 - Done\n";
 }
 
+void tryAnagram()
+{
+    static const std::string terminator = "stop";
+//    std::cin.clear();
+//    std::cin.ignore (INT_MAX, '\n');
+    while (true)
+    {
+        std::cout << "Please enter 2 words:\n ";
+        std::string word1;
+        std::string word2;
+        std::cin >> word1;
+        if (word1 == terminator)
+            return;
+        std::cin >> word2;
+        std::cout << word1 << " and " << word2 << " are" << ( (sfd::anagramMap<std::string, char>(word1, word2)) ? " anagrams" : " not anagrams.") << '\n';
+        std::cin.clear();
+        std::cin.ignore (INT_MAX, '\n');
+        /** how to clean cin if there's still rubbish left? */
+    }
+}
+
+void tryAnagramLine()
+{
+    static const std::string terminator = "stop";
+    while (true)
+    {
+        std::cout << "Please enter 2 lines:\n ";
+        std::string line1;
+        std::string line2;
+        std::getline (std::cin, line1);
+        if (line1 == terminator)
+            return;
+        std:getline(std::cin, line2);
+        std::cout << line1 << " and " << line2 << " are" << ( (sfd::anagramMap<std::string, char>(line1, line2)) ? " anagrams" : " not anagrams.") << '\n';
+        /** how to clean cin if there's still rubbish left? */
+    }
+}
+
+
 int main(int argc, const char * argv[]) {
     try {
         tryNaive();
         tryCounter1();
         tryCounter2();
+        tryAnagram();
+        tryAnagramLine();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';

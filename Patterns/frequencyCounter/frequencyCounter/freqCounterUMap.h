@@ -12,6 +12,7 @@
 
 namespace sfd {
     /** Linear time?
+     Based on this:
      https://www.geeksforgeeks.org/counting-frequencies-of-array-elements/
      */
     
@@ -20,6 +21,8 @@ namespace sfd {
         if (arr1.size() != arr2.size())
             return false;
         std::unordered_map<int, int> u_map1 {arr1.size()}, u_map2 {arr2.size()}; // O(1)
+        
+        // frequency counter - O(n) average.
         for (int i = 0; i < arr1.size(); ++i) // O (n)
         {
             ++u_map1[arr1[i]]; // operator[] - O(1) average, O(n) worst case
