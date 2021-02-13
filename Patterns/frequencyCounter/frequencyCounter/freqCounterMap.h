@@ -12,12 +12,14 @@
 
 namespace sfd {
     /** Time O(n logn). */
-    bool frequencyCounterMap (const std::vector<int>& arr1, const std::vector<int>& arr2)
+    /** Container C, Elem T */
+    template <typename C, typename T>
+    bool frequencyCounterMap (const C& arr1, const C& arr2)
     {
         if (arr1.size() != arr2.size())
             return false;
-        std::map<int, int> elemArr1;
-        std::map<int, int> elemArr2;
+        std::map<T, int> elemArr1;
+        std::map<T, int> elemArr2;
         for (auto elem : arr1) // O(n) -> O (n * log(n)) :(
         {
             (elemArr1.count(elem) > 0) ? elemArr1[elem] += 1 : elemArr1[elem] = 1; // O log(n) -> O (log(n))

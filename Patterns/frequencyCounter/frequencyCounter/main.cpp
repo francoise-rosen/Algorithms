@@ -11,6 +11,7 @@
 #include "naiveCounter.h"
 #include "freqCounterMap.h"
 #include "freqCounterUMap.h"
+#include "string"
 /**
    Find if elements of second array are squared elements of first
    Frequency must match
@@ -33,6 +34,11 @@ void printUnorderedMap (const std::unordered_map<int, int> myMap)
     }
 }
 
+bool isAnagram (const std::string& a, const std::string& b)
+{
+    return true;
+}
+
 void tryNaive()
 {
     std::vector<int> a {1, 2, 3};
@@ -50,17 +56,23 @@ void tryNaive()
 
 void tryCounter1()
 {
+    using C = std::vector<int>;
     std::vector<int> a {1, 2, 3};
     std::vector<int> b {4, 1, 9};
     std::vector<int> c {4, 1, 4};
     std::vector<int> d {16, 16, 1};
-    sfd::frequencyCounterMap (a, c);
-    sfd::frequencyCounterMap (a, b);
-    assert (sfd::frequencyCounterMap(a, b) == true);
-    assert (sfd::frequencyCounterMap(a, c) == false);
-    assert (sfd::frequencyCounterMap(c, b) == false);
-    assert (sfd::frequencyCounterMap(a, a) == false);
-    assert (sfd::frequencyCounterMap(c, d) == true);
+    sfd::frequencyCounterMap<C, int> (a, c);
+    sfd::frequencyCounterMap<C, int> (a, b);
+    bool ab = sfd::frequencyCounterMap<C, int>(a, b);
+    bool ac = sfd::frequencyCounterMap<C, int>(a, c);
+    bool cb = sfd::frequencyCounterMap<C, int>(c, b);
+    bool aa = sfd::frequencyCounterMap<C, int>(a, a);
+    bool cd = sfd::frequencyCounterMap<C, int>(c, d);
+    assert (ab == true);
+    assert (ac == false);
+    assert (cb == false);
+    assert (aa == false);
+    assert (cd == true);
     std::cout << "Counter - Done\n";
 }
 
