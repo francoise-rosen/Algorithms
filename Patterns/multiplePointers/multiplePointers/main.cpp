@@ -15,7 +15,7 @@ void testSubZero ()
 {
     using Iterator = typename std::vector<int>::const_iterator;
     std::vector<int> v {-4, -3, -2, 0, 1, 3, 7};
-    std::pair<Iterator, Iterator> p = subZero<std::vector<int>> (v);
+    std::pair<Iterator, Iterator> p = subZeroC<std::vector<int>> (v);
     if (p == std::pair<Iterator, Iterator>{v.end(), v.end()})
         std::cout << "no 0 sum!";
     else
