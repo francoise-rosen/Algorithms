@@ -137,7 +137,14 @@ void tryAnagramLine()
 
 void testAnagram()
 {
-    
+    using S = std::string;
+    using c = char;
+    bool match1 = sfd::anagramMap<S, c>("anna", "nnaa");
+    assert (match1 == true);
+    bool match2 = sfd::anagramMap<S, c>("aphex twin", "waxthe nip");
+    assert (match2 == true);
+    bool unmatch1 = sfd::anagramMap<S, c>("aphex twin", "ahexp winn");
+    assert (unmatch1 == false);
 }
 
 
@@ -146,8 +153,9 @@ int main(int argc, const char * argv[]) {
         tryNaive();
         tryCounter1();
         tryCounter2();
-        tryAnagram();
-        tryAnagramLine();
+        //tryAnagram();
+        //tryAnagramLine();
+        testAnagram();
         
     } catch (std::exception& e) {
         std::cerr << e.what() << '\n';
