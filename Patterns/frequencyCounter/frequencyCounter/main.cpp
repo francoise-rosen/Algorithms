@@ -135,6 +135,11 @@ void tryAnagramLine()
     }
 }
 
+void testAnagram()
+{
+    
+}
+
 
 int main(int argc, const char * argv[]) {
     try {

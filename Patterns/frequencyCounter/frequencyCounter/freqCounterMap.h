@@ -55,21 +55,21 @@ namespace sfd {
     {
         if (arr1.size() != arr2.size())
             return false;
-        std::map<T, int> elemArr1;
-        std::map<T, int> elemArr2;
+        std::map<const T*, int> elemArr1;
+        std::map<const T*, int> elemArr2;
         for (auto elem : arr1) // O(n) -> O (n * log(n)) :(
         {
-            (elemArr1.count(elem) > 0) ? elemArr1[elem] += 1 : elemArr1[elem] = 1; // O log(n) -> O (log(n))
+            (elemArr1.count(&elem) > 0) ? elemArr1[&elem] += 1 : elemArr1[&elem] = 1; // O log(n) -> O (log(n))
         }
         
         for (auto elem : arr2) // O(n)
         {
-            elemArr2[elem] += 1; // O (log(n)), but is not save, assuming default int is not 0, however one can find such solutions on the internet!
+            elemArr2[&elem] += 1; // O (log(n)), but is not save, assuming default int is not 0, however one can find such solutions on the internet!
         }
         if (elemArr1.size() != elemArr2.size())
             return false;
-        typename std::map<T, int>::const_iterator it1 = elemArr1.begin();
-        typename std::map<T, int>::const_iterator it2 = elemArr2.begin();
+        typename std::map<const T*, int>::const_iterator it1 = elemArr1.begin();
+        typename std::map<const T*, int>::const_iterator it2 = elemArr2.begin();
         while (it1 != elemArr1.end())
         {
             if (it1->second != it2->second)
