@@ -11,14 +11,18 @@
 #include <set>
 #include <map>
 
+/**
+  Counts unique values in the array. If array is sorted, it takes O(n) time
+ */
+
 void makeSet (std::vector<int>& result, std::vector<int>& v)
 {
     if (v.size() <= 1)
         return;
-    std::sort (v.begin(), v.end());
+    std::sort (v.begin(), v.end()); // O (nlogn)
     auto current = v.begin();
     auto next = v.begin() + 1;
-    while (current != v.end())
+    while (current != v.end()) // O (n)
     {
         if (*current == *next)
         {
@@ -79,7 +83,7 @@ void basicTest2()
 int main(int argc, const char * argv[]) {
     try
     {
-        //basicTest();
+        basicTest();
         basicTest2();
     }
     catch (std::exception& e)
