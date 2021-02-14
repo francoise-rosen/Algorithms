@@ -11,7 +11,7 @@
 #include <set>
 #include <map>
 
-void makeSet (std::set<int>& result, std::vector<int>& v)
+void makeSet (std::vector<int>& result, std::vector<int>& v)
 {
     if (v.size() <= 1)
         return;
@@ -28,14 +28,14 @@ void makeSet (std::set<int>& result, std::vector<int>& v)
         }
         else
         {
-            result.insert (*current);
+            result.push_back (*current);
             ++current;
         }
         ++next;
     }
 }
 
-std::set<int> findUniqueValues (const std::set<std::vector<int>>& setOfArrays)
+std::vector<int> findUniqueValues (const std::vector<std::vector<int>>& setOfArrays)
 {
     std::vector<int> superVector;
     for (auto p : setOfArrays)
@@ -45,16 +45,16 @@ std::set<int> findUniqueValues (const std::set<std::vector<int>>& setOfArrays)
         superVector.resize(vSize + pSize);
         std::copy (p.begin(), p.end(), superVector.begin() + vSize);
     }
-    std::set<int> res;
+    std::vector<int> res;
     makeSet(res, superVector);
-    return std::move (res);
+    return res;
 }
 
 void basicTest()
 {
     std::vector<int> v {1, 21, 3, 3, 3, 3, 4, 5, 22, 22, 23, 23, 23};
     //std::vector<int> v {1, 21};
-    std::set<int> res;
+    std::vector<int> res;
     makeSet (res, v);
     for (auto p: res)
     {
@@ -67,9 +67,9 @@ void basicTest2()
     std::vector<int> v1 {2, 9, 11};
     std::vector<int> v2 {0, 1, 11};
     std::vector<int> v3 {0, 1, 7};
-    std::set<std::vector<int>> testSet {v1, v2, v3};
+    std::vector<std::vector<int>> testSet {v1, v2, v3};
     
-    std::set<int> res = findUniqueValues (testSet);
+    std::vector<int> res = std::move (findUniqueValues (testSet));
     for (auto p : res)
     {
         std::cout << p << '\n';
