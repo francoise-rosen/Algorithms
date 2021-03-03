@@ -10,9 +10,8 @@
 #include <cassert>
 #include <vector>
 
-// add up all the elems in container counting from back
-// even elemens must be multiplied by 2, exluding the last elem (regardless odd or even)
-
+// add up all the elems in container counting from back starting from 1
+// every even index (if counting backwards) must be multiplied by 2
 
 
 int main(int argc, const char * argv[]) {
