@@ -23,6 +23,7 @@ vPair twoSum (const std::vector<int>& array, int s)
         if (hashTable.find(s - elem) != hashTable.end())
         {
             result.insert (std::make_pair (elem, s - elem));
+            return result;
         }
         hashTable[elem] = true;
     }
@@ -32,7 +33,7 @@ vPair twoSum (const std::vector<int>& array, int s)
 
 
 int main(int argc, const char * argv[]) {
-    std::vector<int> array {3, 5, 2, -4, 8, 11};
+    std::vector<int> array {3, 5, 2, -4, 8, 11, 11, -4};
     vPair res = twoSum(array, 7);
     for (auto p : res)
     {
