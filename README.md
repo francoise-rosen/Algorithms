@@ -1,2 +1,2 @@
-# Algorithms. Private Library.
+# Algorithms
 
