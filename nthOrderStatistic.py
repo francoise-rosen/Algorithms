@@ -1,9 +1,12 @@
-# based on Coursera Randomized Selection Algorithm
+# based on Coursera Randomized Selection Algorithm, find nth order statistic, the nth smallest value
 # https://www.coursera.org/learn/algorithms-divide-conquer/lecture/aqUNa/randomized-selection-algorithm
 import array as arr
 import random
+import unittest
 
 def partition (array, begin, end):
+    # end must not be included included 
+    # randrange is [min, max)
     pivot_index = random.randrange (begin, end)
     res_index = begin
     for it in range (begin, end):
@@ -35,31 +38,47 @@ def nOrderStatistic (array, begin, end, index):
     return array[pivot_index]
 
 def nthSmallest (array, n):
+    """
+    Array must not be empty
+    Index must be between 1 (first smallest) and N (size) (Nth smallest)
+    """
+    if len(array) < 1:
+        raise ValueError ("Array length must be positive")
+    if (n < 0 or n > len(array)):
+        raise IndexError (str(n) + " index is out of range")
     n -= 1
     return nOrderStatistic (array, 0, len (array), n)
 
-def test1():
-    seq1 = arr.array("i", [2, 0, 12, 8])
-    seq2 = arr.array("i", [2, 22, 12, 8])
-    seq3 = arr.array("i", [2, 1, 12, 28])
-    seq4 = arr.array("i", [102, 1, 12])
-    index1 = nthSmallest (seq1, 3)
-    index2 = nthSmallest (seq2, 3)
-    index3 = nthSmallest (seq3, 1)
-    index4 = nthSmallest (seq4, random.randrange(1, 4))
-    print (index1)
-    print (index2)
-    print (index3)
-    print (index4)
-
 def testRand (numRolls, size):
-    for _ in range (numRolls):
+    for roll in range (numRolls):
         temp = list (map (lambda _: random.randrange(0, 50), range (size)))
         temp_index = random.randrange (1, size)
         temp_value = nthSmallest (temp, temp_index)
         print (sorted (temp))
         print (f'{temp_index} smallest index has value {temp_value}'.format (temp_index, temp_value))
 
+# Unit Test
+
+class NthOrderStatisticTest (unittest.TestCase):
+
+    def setUp (self):
+        self.seq1 = arr.array("i", [2, 0, 12, 8])
+        self.seq2 = arr.array("i", [9, 5, 2, 1, 6, 11, 7, 3, 10, 4])
+    
+    def test_empty (self):
+        temp = arr.array ('i', [])
+        with self.assertRaises (ValueError):
+            nthSmallest (temp, 1)
+
+    def test_index_out_of_range (self):
+        with self.assertRaises (IndexError):
+            nthSmallest (self.seq1, 5)
+
+    def test_range (self):
+        value = nthSmallest (self.seq2, 1)
+        self.assertEqual (value, 1)
+        self.assertEqual (nthSmallest (self.seq2, 10), 11)
+
 if __name__=="__main__":
-    test1()
-    testRand (10, 10)
+    #testRand (10, 10)
+    unittest.main()
